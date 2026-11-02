@@ -2,9 +2,9 @@
   {
     "id": "complexity",
     "track": "dsa",
-    "title": "Think in complexity",
+    "title": "Linear scans & complexity",
     "level": "Foundation",
-    "description": "Learn to explain why an algorithm is correct, then make it fast.",
+    "description": "Use a loop invariant to justify a one-pass maximum search and explain its time and space cost.",
     "sections": [
       {
         "title": "The mental model",
@@ -67,9 +67,12 @@
     "solution": "function maxValue(nums) {\n  if (!nums.length) return null;\n  let best = nums[0];\n  for (const n of nums) if (n > best) best = n;\n  return best;\n}",
     "video": {
       "id": "ZA-tUyM_y7s",
-      "title": "Algorithms and Computation",
+      "title": "1. Algorithms and Computation",
       "creator": "MIT OpenCourseWare",
-      "note": "A rigorous introduction to describing algorithms and arguing about efficiency."
+      "sourceUrl": "https://www.youtube.com/watch?v=ZA-tUyM_y7s",
+      "topicId": "complexity",
+      "note": "Watch the discussion of correctness and running time, then apply both ideas to the maximum scan. The exercise is a small linear-time example of the same analysis.",
+      "reviewedAt": "2026-11-02"
     },
     "source": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
     "tags": [
@@ -79,14 +82,194 @@
     "minutes": 30,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [],
+    "learningObjective": "Use a loop invariant to justify a one-pass maximum search and explain its time and space cost.",
+    "topicId": "complexity",
+    "alignment": {
+      "read": "complexity",
+      "watch": "complexity",
+      "practise": "complexity"
+    },
+    "practiceGoal": "Use a loop invariant to justify a one-pass maximum search and explain its time and space cost.",
+    "order": 1
+  },
+  {
+    "id": "hashing",
+    "track": "dsa",
+    "title": "Frequency maps & unique characters",
+    "level": "Foundation",
+    "description": "Count character frequencies with a map, then find the first character whose count is one.",
+    "sections": [
+      {
+        "title": "The mental model",
+        "body": "A map associates keys with values. A set records membership. Hash tables aim for expected constant-time lookup, insert, and delete under suitable hashing and load-factor assumptions. Collisions still need resolution. Frequency counting transforms repeated searches into a single scan: update the count for each item, then inspect the resulting counts."
+      },
+      {
+        "title": "Work through an example",
+        "body": "To find the first unique character in swiss, count every character: s appears three times, w once, and i once. A second scan in the original order finds w first. Returning the first key in some arbitrary map order would not express the real requirement. Two O(n) passes still give O(n) total time, with O(k) storage for k distinct characters."
+      },
+      {
+        "title": "Engineering judgement",
+        "body": "Use Map rather than a plain object for unconstrained keys; object prototypes can make names such as constructor surprising. Unicode needs an explicit unit: JavaScript string indexing uses UTF-16 code units, while for...of iterates code points. This exercise returns a character, avoiding an index-unit mismatch. Human-perceived graphemes can require further segmentation."
+      }
+    ],
+    "question": "Implement firstUnique(text). Return the first code point that occurs once, or null if none exists. Preserve original order.",
+    "functionName": "firstUnique",
+    "starter": "function firstUnique(text) {\n  // Write your solution here\n}\n",
+    "tests": [
+      {
+        "args": [
+          "swiss"
+        ],
+        "expected": "w",
+        "label": "Preserves order"
+      },
+      {
+        "args": [
+          "aabb"
+        ],
+        "expected": null,
+        "label": "No unique character"
+      },
+      {
+        "args": [
+          ""
+        ],
+        "expected": null,
+        "label": "Empty string"
+      },
+      {
+        "args": [
+          "🙂a🙂b"
+        ],
+        "expected": "a",
+        "label": "Unicode code points"
+      }
+    ],
+    "solution": "function firstUnique(text) {\n const counts=new Map();\n for(const c of text) counts.set(c,(counts.get(c)||0)+1);\n for(const c of text) if(counts.get(c)===1) return c;\n return null;\n}",
+    "video": {
+      "id": "rBENYgWy3xU",
+      "title": "First Unique Character in a String - Leetcode 387 - Python",
+      "creator": "NeetCodeIO",
+      "sourceUrl": "https://www.youtube.com/watch?v=rBENYgWy3xU",
+      "topicId": "hashing",
+      "note": "Follow the character-frequency map and the second pass in original order. The video returns an index; our exercise returns the character itself, or null when none exists.",
+      "reviewedAt": "2026-11-02"
+    },
+    "source": "https://neetcode.io/solutions/first-unique-character-in-a-string",
+    "tags": [
+      "Map",
+      "Counting"
+    ],
+    "minutes": 30,
+    "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
+    "sourceLabel": "Creator / primary reference",
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "complexity"
+    ],
+    "learningObjective": "Count character frequencies with a map, then find the first character whose count is one.",
+    "topicId": "hashing",
+    "alignment": {
+      "read": "hashing",
+      "watch": "hashing",
+      "practise": "hashing"
+    },
+    "practiceGoal": "Count character frequencies with a map, then find the first character whose count is one.",
+    "order": 2
+  },
+  {
+    "id": "stacks",
+    "track": "dsa",
+    "title": "Stacks & balanced brackets",
+    "level": "Foundation",
+    "description": "Use a last-in, first-out stack to validate matching and correctly nested brackets.",
+    "sections": [
+      {
+        "title": "The stack contract",
+        "body": "A stack is last-in, first-out: the newest unfinished item is the next one processed. Nested brackets have precisely this structure. In a string such as ([{}]), the opening brace is the first opening symbol that must be closed. Keep a stack of unmatched opening brackets. The contract after every character is that this stack contains exactly the still-open brackets, in their opening order."
+      },
+      {
+        "title": "Match the most recent opening",
+        "body": "When reading an opening bracket, push it. When reading a closing bracket, compare it with the most recent opening bracket and pop only if the pair matches. For ([)], the closing parenthesis encounters an opening square bracket, so the string is invalid even though the total counts might balance. At the end, an empty stack means every opening bracket was closed."
+      },
+      {
+        "title": "Choose and test the boundaries",
+        "body": "Each bracket is pushed or popped at most once, giving O(n) time and O(n) worst-case auxiliary space for n characters. This exercise ignores non-bracket text, whereas the video problem contains only bracket symbols. Check an empty string, an unmatched closing symbol, an unclosed opening symbol, adjacent pairs, and incorrectly nested pairs. Counting openings and closings alone cannot prove correct nesting."
+      }
+    ],
+    "question": "Implement balanced(text) for (), [], and {}. Ignore all other characters. Return true only when nesting and ordering are valid.",
+    "functionName": "balanced",
+    "starter": "function balanced(text) {\n  // Write your solution here\n}\n",
+    "tests": [
+      {
+        "args": [
+          "a([{}])"
+        ],
+        "expected": true,
+        "label": "Nested brackets"
+      },
+      {
+        "args": [
+          "([)]"
+        ],
+        "expected": false,
+        "label": "Wrong nesting"
+      },
+      {
+        "args": [
+          "("
+        ],
+        "expected": false,
+        "label": "Unclosed bracket"
+      },
+      {
+        "args": [
+          ""
+        ],
+        "expected": true,
+        "label": "Empty input"
+      }
+    ],
+    "solution": "function balanced(text) {\n const stack=[], pairs={\")\":\"(\",\"]\":\"[\",\"}\":\"{\"};\n for(const c of text) {\n  if(\"([{ \".trim().includes(c)) stack.push(c);\n  else if(c in pairs && stack.pop()!==pairs[c]) return false;\n }\n return stack.length===0;\n}",
+    "video": {
+      "id": "WTzjTskDFMg",
+      "title": "Valid Parentheses - Stack - Leetcode 20 - Python",
+      "creator": "NeetCode",
+      "sourceUrl": "https://www.youtube.com/watch?v=WTzjTskDFMg",
+      "topicId": "stacks",
+      "note": "Trace each push and pop in the bracket validator. Our exercise uses the same stack invariant, and additionally ignores ordinary non-bracket text.",
+      "reviewedAt": "2026-11-02"
+    },
+    "source": "https://neetcode.io/solutions/valid-parentheses",
+    "tags": [
+      "Stack",
+      "Queue"
+    ],
+    "minutes": 30,
+    "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
+    "sourceLabel": "Creator / primary reference",
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "complexity"
+    ],
+    "learningObjective": "Use a last-in, first-out stack to validate matching and correctly nested brackets.",
+    "topicId": "stacks",
+    "alignment": {
+      "read": "stacks",
+      "watch": "stacks",
+      "practise": "stacks"
+    },
+    "practiceGoal": "Use a last-in, first-out stack to validate matching and correctly nested brackets.",
+    "order": 3
   },
   {
     "id": "arrays",
     "track": "dsa",
-    "title": "Arrays & two pointers",
-    "level": "Foundation",
-    "description": "Replace repeated work with a well-chosen invariant.",
+    "title": "Sorted arrays & two pointers",
+    "level": "Core",
+    "description": "Use sorted order to move two pointers safely while searching for a target pair sum.",
     "sections": [
       {
         "title": "The mental model",
@@ -164,167 +347,42 @@
     ],
     "solution": "function pairSum(sorted, target) {\n let l=0,r=sorted.length-1;\n while(l<r) { const s=sorted[l]+sorted[r];\n  if(s===target) return [l,r];\n  if(s<target) l++; else r--;\n }\n return null;\n}",
     "video": {
-      "id": "CHhwJjR0mZA",
-      "title": "Data Structures and Dynamic Arrays",
-      "creator": "MIT OpenCourseWare",
-      "note": "Sequence operations, representation choices, and their costs."
+      "id": "cQ1Oz4ckceM",
+      "title": "TWO SUM II - Amazon Coding Interview Question - Leetcode 167 - Python",
+      "creator": "NeetCode",
+      "sourceUrl": "https://www.youtube.com/watch?v=cQ1Oz4ckceM",
+      "topicId": "arrays",
+      "note": "Follow the same end-to-end two-pointer strategy. The video problem uses one-based indices; our playground uses zero-based indices and returns null when no pair exists.",
+      "reviewedAt": "2026-11-02"
     },
-    "source": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
+    "source": "https://neetcode.io/solutions/two-sum-ii-input-array-is-sorted",
     "tags": [
       "Two pointers",
       "Arrays"
     ],
-    "minutes": 30,
+    "minutes": 45,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
-  },
-  {
-    "id": "hashing",
-    "track": "dsa",
-    "title": "Hash maps & frequency",
-    "level": "Foundation",
-    "description": "Trade a little memory for less repeated searching.",
-    "sections": [
-      {
-        "title": "The mental model",
-        "body": "A map associates keys with values. A set records membership. Hash tables aim for expected constant-time lookup, insert, and delete under suitable hashing and load-factor assumptions. Collisions still need resolution. Frequency counting transforms repeated searches into a single scan: update the count for each item, then inspect the resulting counts."
-      },
-      {
-        "title": "Work through an example",
-        "body": "To find the first unique character in swiss, count every character: s appears three times, w once, and i once. A second scan in the original order finds w first. Returning the first key in some arbitrary map order would not express the real requirement. Two O(n) passes still give O(n) total time, with O(k) storage for k distinct characters."
-      },
-      {
-        "title": "Engineering judgement",
-        "body": "Use Map rather than a plain object for unconstrained keys; object prototypes can make names such as constructor surprising. Unicode needs an explicit unit: JavaScript string indexing uses UTF-16 code units, while for...of iterates code points. This exercise returns a character, avoiding an index-unit mismatch. Human-perceived graphemes can require further segmentation."
-      }
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "complexity"
     ],
-    "question": "Implement firstUnique(text). Return the first code point that occurs once, or null if none exists. Preserve original order.",
-    "functionName": "firstUnique",
-    "starter": "function firstUnique(text) {\n  // Write your solution here\n}\n",
-    "tests": [
-      {
-        "args": [
-          "swiss"
-        ],
-        "expected": "w",
-        "label": "Preserves order"
-      },
-      {
-        "args": [
-          "aabb"
-        ],
-        "expected": null,
-        "label": "No unique character"
-      },
-      {
-        "args": [
-          ""
-        ],
-        "expected": null,
-        "label": "Empty string"
-      },
-      {
-        "args": [
-          "🙂a🙂b"
-        ],
-        "expected": "a",
-        "label": "Unicode code points"
-      }
-    ],
-    "solution": "function firstUnique(text) {\n const counts=new Map();\n for(const c of text) counts.set(c,(counts.get(c)||0)+1);\n for(const c of text) if(counts.get(c)===1) return c;\n return null;\n}",
-    "video": {
-      "id": "Nu8YGneFCWE",
-      "title": "Hashing",
-      "creator": "MIT OpenCourseWare",
-      "note": "Why hash-based lookup is useful and which assumptions it needs."
+    "learningObjective": "Use sorted order to move two pointers safely while searching for a target pair sum.",
+    "topicId": "arrays",
+    "alignment": {
+      "read": "arrays",
+      "watch": "arrays",
+      "practise": "arrays"
     },
-    "source": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
-    "tags": [
-      "Map",
-      "Counting"
-    ],
-    "minutes": 30,
-    "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
-    "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
-  },
-  {
-    "id": "stacks",
-    "track": "dsa",
-    "title": "Stacks, queues & traversal",
-    "level": "Foundation",
-    "description": "Choose the order in which work gets processed.",
-    "sections": [
-      {
-        "title": "The mental model",
-        "body": "A stack is last-in, first-out; a queue is first-in, first-out. Stacks model nested work such as parsing or depth-first traversal. Queues model a frontier such as breadth-first search. Neither is defined by one specific implementation: arrays, linked nodes, and ring buffers can implement these interfaces with different cost profiles."
-      },
-      {
-        "title": "Work through an example",
-        "body": "Balanced brackets are a stack problem. For ([{}]), push each opening bracket. Each closing bracket must match the most recent unmatched opening. If it does, pop; if it does not, fail. After reading all characters, the stack must be empty. Merely counting opening and closing symbols fails on ([)], because nesting order matters."
-      },
-      {
-        "title": "Engineering judgement",
-        "body": "In JavaScript, repeatedly shifting an array may move the remaining elements. A queue with a head index avoids that cost. Recursive traversal also consumes a call stack and can overflow on deep input. Choose an explicit stack when depth is unbounded. Document whether a parser ignores ordinary text or rejects it; this one ignores it."
-      }
-    ],
-    "question": "Implement balanced(text) for (), [], and {}. Ignore all other characters. Return true only when nesting and ordering are valid.",
-    "functionName": "balanced",
-    "starter": "function balanced(text) {\n  // Write your solution here\n}\n",
-    "tests": [
-      {
-        "args": [
-          "a([{}])"
-        ],
-        "expected": true,
-        "label": "Nested brackets"
-      },
-      {
-        "args": [
-          "([)]"
-        ],
-        "expected": false,
-        "label": "Wrong nesting"
-      },
-      {
-        "args": [
-          "("
-        ],
-        "expected": false,
-        "label": "Unclosed bracket"
-      },
-      {
-        "args": [
-          ""
-        ],
-        "expected": true,
-        "label": "Empty input"
-      }
-    ],
-    "solution": "function balanced(text) {\n const stack=[], pairs={\")\":\"(\",\"]\":\"[\",\"}\":\"{\"};\n for(const c of text) {\n  if(\"([{ \".trim().includes(c)) stack.push(c);\n  else if(c in pairs && stack.pop()!==pairs[c]) return false;\n }\n return stack.length===0;\n}",
-    "video": {
-      "id": "CHhwJjR0mZA",
-      "title": "Data Structures and Dynamic Arrays",
-      "creator": "MIT OpenCourseWare",
-      "note": "Sequence operations, representation choices, and their costs."
-    },
-    "source": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
-    "tags": [
-      "Stack",
-      "Queue"
-    ],
-    "minutes": 30,
-    "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
-    "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "practiceGoal": "Use sorted order to move two pointers safely while searching for a target pair sum.",
+    "order": 4
   },
   {
     "id": "binary-search",
     "track": "dsa",
-    "title": "Binary search & boundaries",
+    "title": "Binary search & insertion boundaries",
     "level": "Core",
-    "description": "Turn a monotonic condition into logarithmic search.",
+    "description": "Maintain a half-open interval to find the first value at least as large as a target.",
     "sections": [
       {
         "title": "The mental model",
@@ -389,12 +447,15 @@
     ],
     "solution": "function lowerBound(nums,target) {\n let lo=0,hi=nums.length;\n while(lo<hi) {\n  const mid=lo+Math.floor((hi-lo)/2);\n  if(nums[mid]<target) lo=mid+1; else hi=mid;\n }\n return lo;\n}",
     "video": {
-      "id": "ZA-tUyM_y7s",
-      "title": "Algorithms and Computation",
-      "creator": "MIT OpenCourseWare",
-      "note": "A rigorous introduction to describing algorithms and arguing about efficiency."
+      "id": "K-RYzDZkzCI",
+      "title": "Search Insert Position - Binary Search - Leetcode 35 - Python",
+      "creator": "NeetCode",
+      "sourceUrl": "https://www.youtube.com/watch?v=K-RYzDZkzCI",
+      "topicId": "binary-search",
+      "note": "Search Insert Position finds the insertion boundary. Our lowerBound challenge applies that boundary search to duplicate values too, returning the leftmost valid position.",
+      "reviewedAt": "2026-11-02"
     },
-    "source": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
+    "source": "https://neetcode.io/solutions/search-insert-position",
     "tags": [
       "Boundaries",
       "Search"
@@ -402,26 +463,38 @@
     "minutes": 45,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "arrays"
+    ],
+    "learningObjective": "Maintain a half-open interval to find the first value at least as large as a target.",
+    "topicId": "binary-search",
+    "alignment": {
+      "read": "binary-search",
+      "watch": "binary-search",
+      "practise": "binary-search"
+    },
+    "practiceGoal": "Maintain a half-open interval to find the first value at least as large as a target.",
+    "order": 5
   },
   {
     "id": "trees",
     "track": "dsa",
-    "title": "Trees & recursive structure",
+    "title": "Binary tree depth & recursion",
     "level": "Core",
-    "description": "Make recursive contracts small enough to trust.",
+    "description": "Define a recursive subtree contract and compute a binary tree’s maximum depth.",
     "sections": [
       {
-        "title": "The mental model",
-        "body": "A tree is a hierarchy of nodes with no cycles. Each subtree is itself a tree, making recursion a natural fit. A binary tree has at most two children per node. A binary search tree adds an ordering invariant; it is not automatically balanced. Traversal order determines when you process a node relative to its children."
+        "title": "A precise recursive contract",
+        "body": "A binary tree node has at most two children. To calculate maximum depth, define the answer as the number of nodes on the longest path from the current root to a leaf. Give every recursive call that same contract. An absent child has depth zero, and a leaf has depth one. Thinking in terms of the answer for a subtree makes the recursive step small enough to justify."
       },
       {
-        "title": "Work through an example",
-        "body": "To compute depth, define depth(null) = 0 and depth(node) = 1 + max(depth(left), depth(right)). The recursive contract is precise: each call returns the number of nodes on its longest root-to-leaf path. A leaf therefore has depth one. Processing a node after its children is a postorder computation."
+        "title": "Combine the subtree answers",
+        "body": "For each node, compute the depth of the left subtree and the right subtree, take the larger result, and add one for the current node. A root with two leaf children therefore has depth two. A chain of three nodes has depth three. You do not need a binary-search-tree ordering rule; the operation depends on the structure, not the stored values."
       },
       {
-        "title": "Engineering judgement",
-        "body": "A skewed binary search tree can have linear depth and linear search time. Balanced variants maintain logarithmic height through structural invariants. For general graph-shaped data, a recursive tree algorithm may loop forever because of cycles; validate the representation or maintain a visited set. Prefer iterative traversal for very deep trees in production."
+        "title": "Account for depth and malformed structure",
+        "body": "Every node is visited once, so the traversal takes O(n) time. Recursive calls use O(h) stack space for tree height h, which can grow to n in a skewed tree. An explicit stack can avoid the language call-stack limit on very deep inputs. The input contract is an acyclic tree; arbitrary cyclic graph data needs a visited set rather than this tree-only recursion."
       }
     ],
     "question": "Implement treeDepth(root) for nodes shaped {value, left, right}. A missing child is null. Return 0 for an empty tree.",
@@ -477,12 +550,15 @@
     ],
     "solution": "function treeDepth(root) {\n return root ? 1+Math.max(treeDepth(root.left),treeDepth(root.right)) : 0;\n}",
     "video": {
-      "id": "76dhtgZt38A",
-      "title": "Binary Trees, Part 1",
-      "creator": "MIT OpenCourseWare",
-      "note": "Tree structure, traversal, and dynamic operations."
+      "id": "hTM3phVI6YQ",
+      "title": "Maximum Depth of Binary Tree - 3 Solutions - Leetcode 104 - Python",
+      "creator": "NeetCode",
+      "sourceUrl": "https://www.youtube.com/watch?v=hTM3phVI6YQ",
+      "topicId": "trees",
+      "note": "Compare the recursive and iterative depth calculations. Our exercise uses the same node-depth convention: an empty tree has depth zero and a leaf has depth one.",
+      "reviewedAt": "2026-11-02"
     },
-    "source": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
+    "source": "https://neetcode.io/solutions/maximum-depth-of-binary-tree",
     "tags": [
       "Recursion",
       "Trees"
@@ -490,14 +566,26 @@
     "minutes": 45,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "stacks"
+    ],
+    "learningObjective": "Define a recursive subtree contract and compute a binary tree’s maximum depth.",
+    "topicId": "trees",
+    "alignment": {
+      "read": "trees",
+      "watch": "trees",
+      "practise": "trees"
+    },
+    "practiceGoal": "Define a recursive subtree contract and compute a binary tree’s maximum depth.",
+    "order": 6
   },
   {
     "id": "graphs",
     "track": "dsa",
-    "title": "Graphs & shortest paths",
+    "title": "Breadth-first search & shortest paths",
     "level": "Core",
-    "description": "Find the shortest route by exploring one layer at a time.",
+    "description": "Explore an unweighted graph in distance layers with a queue and visited set.",
     "sections": [
       {
         "title": "The mental model",
@@ -582,9 +670,12 @@
     "solution": "function distance(graph,start,end) {\n const q=[[start,0]], seen=new Set([start]);\n for(let h=0;h<q.length;h++) {\n  const [v,d]=q[h]; if(v===end) return d;\n  for(const n of graph[v]||[]) if(!seen.has(n)) {seen.add(n);q.push([n,d+1]);}\n }\n return -1;\n}",
     "video": {
       "id": "oFVYVzlvk9c",
-      "title": "Breadth-First Search",
+      "title": "9. Breadth-First Search",
       "creator": "MIT OpenCourseWare",
-      "note": "Graph representation and shortest paths in unweighted graphs."
+      "sourceUrl": "https://www.youtube.com/watch?v=oFVYVzlvk9c",
+      "topicId": "graphs",
+      "note": "Follow the BFS frontier and distance layers. Implement that same traversal to return the number of edges between two named vertices.",
+      "reviewedAt": "2026-11-02"
     },
     "source": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
     "tags": [
@@ -594,14 +685,28 @@
     "minutes": 45,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "hashing",
+      "stacks",
+      "trees"
+    ],
+    "learningObjective": "Explore an unweighted graph in distance layers with a queue and visited set.",
+    "topicId": "graphs",
+    "alignment": {
+      "read": "graphs",
+      "watch": "graphs",
+      "practise": "graphs"
+    },
+    "practiceGoal": "Explore an unweighted graph in distance layers with a queue and visited set.",
+    "order": 7
   },
   {
     "id": "dynamic-programming",
     "track": "dsa",
-    "title": "Dynamic programming",
+    "title": "Dynamic programming & coin change",
     "level": "Advanced",
-    "description": "Define the state before writing the recurrence.",
+    "description": "Define minimum-coins subproblems and compute them bottom-up instead of relying on a greedy choice.",
     "sections": [
       {
         "title": "The mental model",
@@ -664,12 +769,15 @@
     ],
     "solution": "function minCoins(coins,amount) {\n const dp=Array(amount+1).fill(Infinity); dp[0]=0;\n for(let a=1;a<=amount;a++) for(const c of coins)\n  if(c<=a) dp[a]=Math.min(dp[a],1+dp[a-c]);\n return Number.isFinite(dp[amount])?dp[amount]:-1;\n}",
     "video": {
-      "id": "r4-cftqTcdI",
-      "title": "Dynamic Programming, Part 1",
-      "creator": "MIT OpenCourseWare",
-      "note": "A systematic way to define and reuse subproblems."
+      "id": "H9bfqozjoqs",
+      "title": "Coin Change - Dynamic Programming Bottom Up - Leetcode 322",
+      "creator": "NeetCode",
+      "sourceUrl": "https://www.youtube.com/watch?v=H9bfqozjoqs",
+      "topicId": "dynamic-programming",
+      "note": "Use the same minimum-coin recurrence, base case, and impossible-state handling in the playground. This is coin change, not a separate Fibonacci lecture.",
+      "reviewedAt": "2026-11-02"
     },
-    "source": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
+    "source": "https://neetcode.io/solutions/coin-change",
     "tags": [
       "DP",
       "Optimization"
@@ -677,14 +785,27 @@
     "minutes": 45,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "arrays",
+      "trees"
+    ],
+    "learningObjective": "Define minimum-coins subproblems and compute them bottom-up instead of relying on a greedy choice.",
+    "topicId": "dynamic-programming",
+    "alignment": {
+      "read": "dynamic-programming",
+      "watch": "dynamic-programming",
+      "practise": "dynamic-programming"
+    },
+    "practiceGoal": "Define minimum-coins subproblems and compute them bottom-up instead of relying on a greedy choice.",
+    "order": 8
   },
   {
     "id": "vectors",
     "track": "ai",
-    "title": "Vectors & similarity",
+    "title": "Vectors & cosine similarity",
     "level": "Foundation",
-    "description": "Build the mathematical intuition behind semantic retrieval.",
+    "description": "Compute a dot product and vector norms, then use cosine similarity to compare directions.",
     "sections": [
       {
         "title": "The mental model",
@@ -762,12 +883,15 @@
     ],
     "solution": "function cosine(a,b) {\n let dot=0,aa=0,bb=0;\n for(let i=0;i<a.length;i++){dot+=a[i]*b[i];aa+=a[i]*a[i];bb+=b[i]*b[i];}\n return aa&&bb?dot/Math.sqrt(aa*bb):0;\n}",
     "video": {
-      "id": "eMlx5fFNoYc",
-      "title": "Attention in transformers, step-by-step",
-      "creator": "3Blue1Brown",
-      "note": "Queries, keys, values, and contextual representations."
+      "id": "e9U0QAFbfLI",
+      "title": "Cosine Similarity, Clearly Explained!!!",
+      "creator": "StatQuest with Josh Starmer",
+      "sourceUrl": "https://www.youtube.com/watch?v=e9U0QAFbfLI",
+      "topicId": "vectors",
+      "note": "Work through the vector geometry and cosine formula. The playground implements that same formula, including an explicit convention for zero vectors.",
+      "reviewedAt": "2026-11-02"
     },
-    "source": "https://www.3blue1brown.com/lessons/attention/",
+    "source": "https://www.youtube.com/watch?v=e9U0QAFbfLI",
     "tags": [
       "Linear algebra",
       "Embeddings"
@@ -775,14 +899,133 @@
     "minutes": 30,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [],
+    "learningObjective": "Compute a dot product and vector norms, then use cosine similarity to compare directions.",
+    "topicId": "vectors",
+    "alignment": {
+      "read": "vectors",
+      "watch": "vectors",
+      "practise": "vectors"
+    },
+    "practiceGoal": "Compute a dot product and vector norms, then use cosine similarity to compare directions.",
+    "order": 1
+  },
+  {
+    "id": "neural-networks",
+    "track": "ai",
+    "title": "Neurons, weighted sums & ReLU",
+    "level": "Foundation",
+    "description": "Calculate a neuron’s weighted sum and bias, then apply the ReLU activation.",
+    "sections": [
+      {
+        "title": "One neuron is a small calculation",
+        "body": "A dense neuron combines input features with learned weights, adds a bias, and applies an activation. Write the preactivation as z = sum(inputs[i] * weights[i]) + bias. ReLU returns max(0, z). A layer applies several such calculations to the same input. Nonlinear activations let a stack of layers represent more than a single affine transformation."
+      },
+      {
+        "title": "Calculate a forward pass",
+        "body": "With inputs [2, -1], weights [0.5, 1], and bias 0.2, the weighted terms sum to zero, so z is 0.2 and the ReLU output is 0.2. With input [1], weight [2], and bias -3, z is -1 and ReLU returns zero. Empty input and weight lists leave only the bias; the exercise explicitly tests this boundary."
+      },
+      {
+        "title": "Separate computation from training",
+        "body": "This lesson implements a forward calculation, not a training algorithm. Inputs and weights must have equal lengths so that each feature has a corresponding weight. Keep that shape contract visible when moving to layers and batches. Once you can explain this forward pass, the later gradient-descent lesson shows how a loss can guide changes to parameters. Do not confuse a larger network with a guarantee of useful predictions."
+      }
+    ],
+    "question": "Implement neuron(inputs, weights, bias), returning ReLU of the weighted sum. Inputs and weights have equal length.",
+    "functionName": "neuron",
+    "starter": "function neuron(inputs, weights, bias) {\n  // Write your solution here\n}\n",
+    "tests": [
+      {
+        "args": [
+          [
+            2,
+            -1
+          ],
+          [
+            0.5,
+            1
+          ],
+          0.2
+        ],
+        "expected": 0.2,
+        "label": "Positive activation"
+      },
+      {
+        "args": [
+          [
+            1
+          ],
+          [
+            2
+          ],
+          -3
+        ],
+        "expected": 0,
+        "label": "ReLU clips negatives"
+      },
+      {
+        "args": [
+          [],
+          [],
+          2
+        ],
+        "expected": 2,
+        "label": "Bias only"
+      },
+      {
+        "args": [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          1
+        ],
+        "expected": 12,
+        "label": "Dot product and bias"
+      }
+    ],
+    "solution": "function neuron(inputs,weights,bias) {\n let z=bias;\n for(let i=0;i<inputs.length;i++) z+=inputs[i]*weights[i];\n return Math.max(0,z);\n}",
+    "video": {
+      "id": "aircAruvnKk",
+      "title": "But what is a neural network? | Deep learning chapter 1",
+      "creator": "3Blue1Brown",
+      "sourceUrl": "https://www.youtube.com/watch?v=aircAruvnKk",
+      "topicId": "neural-networks",
+      "note": "Focus on what one neuron and a layer compute: inputs, weights, biases, and activation. Our exercise implements one ReLU neuron; optimization comes later in this path.",
+      "reviewedAt": "2026-11-02"
+    },
+    "source": "https://www.3blue1brown.com/lessons/neural-networks",
+    "tags": [
+      "Backprop",
+      "Neural nets"
+    ],
+    "minutes": 30,
+    "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
+    "sourceLabel": "Creator / primary reference",
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "vectors"
+    ],
+    "learningObjective": "Calculate a neuron’s weighted sum and bias, then apply the ReLU activation.",
+    "topicId": "neural-networks",
+    "alignment": {
+      "read": "neural-networks",
+      "watch": "neural-networks",
+      "practise": "neural-networks"
+    },
+    "practiceGoal": "Calculate a neuron’s weighted sum and bias, then apply the ReLU activation.",
+    "order": 2
   },
   {
     "id": "probability",
     "track": "ai",
-    "title": "Probability & stable softmax",
+    "title": "Logits, softmax & numerical stability",
     "level": "Foundation",
-    "description": "Turn model scores into a distribution without overflow.",
+    "description": "Convert logits into a probability distribution using a numerically stable softmax.",
     "sections": [
       {
         "title": "The mental model",
@@ -848,12 +1091,15 @@
     ],
     "solution": "function softmax(logits) {\n if(!logits.length) return [];\n const m=Math.max(...logits), ex=logits.map(x=>Math.exp(x-m));\n const total=ex.reduce((a,b)=>a+b,0);\n return ex.map(x=>x/total);\n}",
     "video": {
-      "id": "aircAruvnKk",
-      "title": "But what is a neural network?",
-      "creator": "3Blue1Brown",
-      "note": "Visual intuition for weights, activations, and layers."
+      "id": "KpKog-L9veg",
+      "title": "Neural Networks Part 5: ArgMax and SoftMax",
+      "creator": "StatQuest with Josh Starmer",
+      "sourceUrl": "https://www.youtube.com/watch?v=KpKog-L9veg",
+      "topicId": "probability",
+      "note": "Follow the softmax conversion from scores to normalized probabilities. The field notes and exercise add max subtraction to make the same operation safe for large logits.",
+      "reviewedAt": "2026-11-02"
     },
-    "source": "https://www.3blue1brown.com/lessons/neural-networks",
+    "source": "https://www.youtube.com/watch?v=KpKog-L9veg",
     "tags": [
       "Probability",
       "Numerics"
@@ -861,14 +1107,26 @@
     "minutes": 30,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "neural-networks"
+    ],
+    "learningObjective": "Convert logits into a probability distribution using a numerically stable softmax.",
+    "topicId": "probability",
+    "alignment": {
+      "read": "probability",
+      "watch": "probability",
+      "practise": "probability"
+    },
+    "practiceGoal": "Convert logits into a probability distribution using a numerically stable softmax.",
+    "order": 3
   },
   {
     "id": "gradient-descent",
     "track": "ai",
     "title": "Gradient descent from scratch",
     "level": "Core",
-    "description": "Understand the learning loop before using a framework.",
+    "description": "Reduce a differentiable loss by updating a parameter opposite its gradient.",
     "sections": [
       {
         "title": "The mental model",
@@ -927,9 +1185,12 @@
     "solution": "function descend(start,rate,steps) {\n let w=start;\n for(let i=0;i<steps;i++) w-=rate*2*(w-3);\n return w;\n}",
     "video": {
       "id": "IHZwWFHWa-w",
-      "title": "Gradient descent, how neural networks learn",
+      "title": "Gradient descent, how neural networks learn | Deep Learning Chapter 2",
       "creator": "3Blue1Brown",
-      "note": "Build an intuition for minimizing a differentiable loss."
+      "sourceUrl": "https://www.youtube.com/watch?v=IHZwWFHWa-w",
+      "topicId": "gradient-descent",
+      "note": "Follow how loss, derivatives, and learning rate determine an update. Apply that same update rule to the scalar quadratic in the playground.",
+      "reviewedAt": "2026-11-02"
     },
     "source": "https://www.3blue1brown.com/lessons/gradient-descent",
     "tags": [
@@ -939,46 +1200,65 @@
     "minutes": 45,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "neural-networks",
+      "probability"
+    ],
+    "learningObjective": "Reduce a differentiable loss by updating a parameter opposite its gradient.",
+    "topicId": "gradient-descent",
+    "alignment": {
+      "read": "gradient-descent",
+      "watch": "gradient-descent",
+      "practise": "gradient-descent"
+    },
+    "practiceGoal": "Reduce a differentiable loss by updating a parameter opposite its gradient.",
+    "order": 4
   },
   {
-    "id": "neural-networks",
+    "id": "evaluation",
     "track": "ai",
-    "title": "Neural networks & backprop",
+    "title": "Confusion matrices & classifier metrics",
     "level": "Core",
-    "description": "Connect forward computation to parameter gradients.",
+    "description": "Count classification outcomes and derive precision and recall, including zero-denominator cases.",
     "sections": [
       {
         "title": "The mental model",
-        "body": "A dense layer computes an affine transformation followed by an activation. For one neuron, z=w·x+b and output=activation(z). ReLU returns max(0,z); its nonlinearity lets a stack of layers express functions that one linear map cannot. Backpropagation efficiently applies the chain rule through the computation graph to obtain loss gradients."
+        "body": "An evaluation is a repeatable test of behavior against explicit criteria. For classifiers, accuracy measures overall correctness, precision measures how many positive predictions are correct, and recall measures how many actual positives were found. These metrics answer different questions. For generative systems, use task-specific checks, groundedness review, and human assessment rather than one universal score."
       },
       {
         "title": "Work through an example",
-        "body": "With x=[2,-1], w=[0.5,1], and b=0.2, the preactivation is 0.2 and ReLU returns 0.2. If z is negative, ReLU returns zero and its usual local derivative is zero. For a positive z, sensitivity passes through unchanged. In a larger graph, contributions from all paths to a parameter must be added."
+        "body": "For actual labels [1,1,0,0] and predicted labels [1,0,1,0], there is one true positive, one false positive, and one false negative. Precision and recall are both 0.5. A model that always predicts the majority class can have high accuracy on imbalanced data yet be useless for finding rare events. Always compare with such simple baselines."
       },
       {
         "title": "Engineering judgement",
-        "body": "Keep tensor dimensions explicit: batch × features multiplied by features × hidden produces batch × hidden. Broadcasting mistakes can produce plausible but incorrect results. Validate analytical gradients against small finite differences before scaling up. Watch for non-finite losses and activations. A larger network increases capacity, but appropriate data and evaluation still determine usefulness."
+        "body": "Keep evaluation cases versioned and separate from tuning examples. Break failures down by category, input length, and user task. Track latency and cost alongside quality. Small datasets have uncertainty; a tiny average improvement may be noise. For retrieval, inspect recall at k and the quality of cited evidence. For tool-using systems, test incorrect tool arguments and unsafe instruction following."
       }
     ],
-    "question": "Implement neuron(inputs, weights, bias), returning ReLU of the weighted sum. Inputs and weights have equal length.",
-    "functionName": "neuron",
-    "starter": "function neuron(inputs, weights, bias) {\n  // Write your solution here\n}\n",
+    "question": "Implement metrics(actual, predicted) for 0/1 labels. Return {precision, recall}. If a denominator is zero, return 0 for that metric. Arrays have equal length.",
+    "functionName": "metrics",
+    "starter": "function metrics(actual, predicted) {\n  // Write your solution here\n}\n",
     "tests": [
       {
         "args": [
           [
-            2,
-            -1
+            1,
+            1,
+            0,
+            0
           ],
           [
-            0.5,
-            1
-          ],
-          0.2
+            1,
+            0,
+            1,
+            0
+          ]
         ],
-        "expected": 0.2,
-        "label": "Positive activation"
+        "expected": {
+          "precision": 0.5,
+          "recall": 0.5
+        },
+        "label": "Mixed outcomes"
       },
       {
         "args": [
@@ -986,61 +1266,183 @@
             1
           ],
           [
-            2
-          ],
-          -3
+            1
+          ]
         ],
-        "expected": 0,
-        "label": "ReLU clips negatives"
+        "expected": {
+          "precision": 1,
+          "recall": 1
+        },
+        "label": "Perfect positive"
       },
       {
         "args": [
-          [],
-          [],
-          2
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
         ],
-        "expected": 2,
-        "label": "Bias only"
+        "expected": {
+          "precision": 0,
+          "recall": 0
+        },
+        "label": "Zero denominators"
       },
       {
         "args": [
           [
             1,
-            2
+            1
           ],
           [
-            3,
-            4
-          ],
-          1
+            0,
+            0
+          ]
         ],
-        "expected": 12,
-        "label": "Dot product and bias"
+        "expected": {
+          "precision": 0,
+          "recall": 0
+        },
+        "label": "Missed positives"
       }
     ],
-    "solution": "function neuron(inputs,weights,bias) {\n let z=bias;\n for(let i=0;i<inputs.length;i++) z+=inputs[i]*weights[i];\n return Math.max(0,z);\n}",
+    "solution": "function metrics(actual,predicted) {\n let tp=0,fp=0,fn=0;\n actual.forEach((a,i)=>{if(predicted[i]===1){if(a===1)tp++;else fp++;}else if(a===1)fn++;});\n return {precision:tp+fp?tp/(tp+fp):0,recall:tp+fn?tp/(tp+fn):0};\n}",
     "video": {
-      "id": "Ilg3gGewQ5U",
-      "title": "Backpropagation, intuitively",
-      "creator": "3Blue1Brown",
-      "note": "How the chain rule assigns credit to parameters."
+      "id": "Kdsp6soqA7o",
+      "title": "Machine Learning Fundamentals: The Confusion Matrix",
+      "creator": "StatQuest with Josh Starmer",
+      "sourceUrl": "https://www.youtube.com/watch?v=Kdsp6soqA7o",
+      "topicId": "evaluation",
+      "note": "Build the confusion matrix from actual and predicted labels. The exercise uses those same true-positive, false-positive, and false-negative counts to calculate precision and recall.",
+      "reviewedAt": "2026-11-02"
     },
-    "source": "https://www.3blue1brown.com/lessons/backpropagation/",
+    "source": "https://scikit-learn.org/stable/modules/model_evaluation.html",
     "tags": [
-      "Backprop",
-      "Neural nets"
+      "Evals",
+      "Metrics"
     ],
     "minutes": 45,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "probability"
+    ],
+    "learningObjective": "Count classification outcomes and derive precision and recall, including zero-denominator cases.",
+    "topicId": "evaluation",
+    "alignment": {
+      "read": "evaluation",
+      "watch": "evaluation",
+      "practise": "evaluation"
+    },
+    "practiceGoal": "Count classification outcomes and derive precision and recall, including zero-denominator cases.",
+    "order": 5
+  },
+  {
+    "id": "ai-systems",
+    "track": "ai",
+    "title": "Schema validation for AI tool requests",
+    "level": "Core",
+    "description": "Validate the structure, allowed action, and query bounds of a proposed search-tool request before executing it.",
+    "sections": [
+      {
+        "title": "Treat a proposed tool call as structured input",
+        "body": "A model or another external component can propose a structured search request, but a proposed object is still untrusted input. Define an explicit contract before executing it: a supported action, required fields, field types, and bounds. JSON Schema expresses such shape constraints declaratively; a small hand-written predicate can enforce a narrow contract too. Valid structure is one boundary, not permission to perform arbitrary actions."
+      },
+      {
+        "title": "Validate the search request",
+        "body": "For this lesson, accept a non-array object with action exactly search and a query string whose trimmed length is between one and two hundred characters. Reject null, unsupported actions, missing strings, whitespace-only queries, and excessively long text. The reference video demonstrates writing and applying a JSON schema to structured API data. The exercise applies the same validation method to a proposed search-tool request without requiring an external tool or service."
+      },
+      {
+        "title": "Keep validation separate from execution",
+        "body": "Return a validation result before calling any tool. A structurally valid request may still need application authorization and an execution budget; schema validation does not establish that a model’s claims are true. Keep unknown actions disabled, avoid treating retrieved text as trusted instructions, and report invalid fields clearly. This lesson focuses on the validation boundary; it does not claim to implement a complete agent, model service, or security policy."
+      }
+    ],
+    "question": "Implement validRequest(value). Accept only a non-array object with action exactly \"search\" and a query string whose trimmed length is 1–200. Return a boolean.",
+    "functionName": "validRequest",
+    "starter": "function validRequest(value) {\n  // Write your solution here\n}\n",
+    "tests": [
+      {
+        "args": [
+          {
+            "action": "search",
+            "query": "cache"
+          }
+        ],
+        "expected": true,
+        "label": "Valid request"
+      },
+      {
+        "args": [
+          {
+            "action": "delete",
+            "query": "cache"
+          }
+        ],
+        "expected": false,
+        "label": "Unsupported action"
+      },
+      {
+        "args": [
+          {
+            "action": "search",
+            "query": "   "
+          }
+        ],
+        "expected": false,
+        "label": "Empty query"
+      },
+      {
+        "args": [
+          null
+        ],
+        "expected": false,
+        "label": "Null input"
+      }
+    ],
+    "solution": "function validRequest(value) {\n return !!value && typeof value===\"object\" && !Array.isArray(value) &&\n value.action===\"search\" && typeof value.query===\"string\" &&\n value.query.trim().length>=1 && value.query.trim().length<=200;\n}",
+    "video": {
+      "id": "IbyYUTBDVXQ",
+      "title": "JSON Schema Tricks Every Developer Must Know",
+      "creator": "Postman",
+      "sourceUrl": "https://www.youtube.com/watch?v=IbyYUTBDVXQ",
+      "topicId": "ai-systems",
+      "note": "Watch how a JSON schema turns an expected data shape into validation checks. Apply that same contract-validation method to the search-tool request here. Postman is a demonstration tool; no external setup is required for our exercise.",
+      "reviewedAt": "2026-11-02"
+    },
+    "source": "https://www.youtube.com/watch?v=IbyYUTBDVXQ",
+    "tags": [
+      "Architecture",
+      "Validation"
+    ],
+    "minutes": 45,
+    "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
+    "sourceLabel": "Creator / primary reference",
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "neural-networks",
+      "evaluation"
+    ],
+    "learningObjective": "Validate the structure, allowed action, and query bounds of a proposed search-tool request before executing it.",
+    "topicId": "ai-systems",
+    "alignment": {
+      "read": "ai-systems",
+      "watch": "ai-systems",
+      "practise": "ai-systems"
+    },
+    "practiceGoal": "Validate the structure, allowed action, and query bounds of a proposed search-tool request before executing it.",
+    "order": 6
   },
   {
     "id": "attention",
     "track": "ai",
-    "title": "Attention & transformers",
+    "title": "Scaled dot-product attention",
     "level": "Advanced",
-    "description": "Compute context-dependent representations one query at a time.",
+    "description": "Score query–key pairs, apply stable softmax, and combine values using the resulting weights.",
     "sections": [
       {
         "title": "The mental model",
@@ -1136,9 +1538,12 @@
     "solution": "function attend(query,keys,values) {\n if(!keys.length) return 0;\n const s=keys.map(k=>k.reduce((a,x,i)=>a+x*query[i],0)/Math.sqrt(query.length));\n const m=Math.max(...s),e=s.map(x=>Math.exp(x-m)),z=e.reduce((a,b)=>a+b,0);\n return e.reduce((a,x,i)=>a+x*values[i]/z,0);\n}",
     "video": {
       "id": "eMlx5fFNoYc",
-      "title": "Attention in transformers, step-by-step",
+      "title": "Attention in transformers, step-by-step | Deep Learning Chapter 6",
       "creator": "3Blue1Brown",
-      "note": "Queries, keys, values, and contextual representations."
+      "sourceUrl": "https://www.youtube.com/watch?v=eMlx5fFNoYc",
+      "topicId": "attention",
+      "note": "Follow queries, keys, values, and softmax weighting. Our one-query exercise is a small numerical version of the same attention operation.",
+      "reviewedAt": "2026-11-02"
     },
     "source": "https://arxiv.org/abs/1706.03762",
     "tags": [
@@ -1148,14 +1553,28 @@
     "minutes": 45,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "vectors",
+      "probability",
+      "gradient-descent"
+    ],
+    "learningObjective": "Score query–key pairs, apply stable softmax, and combine values using the resulting weights.",
+    "topicId": "attention",
+    "alignment": {
+      "read": "attention",
+      "watch": "attention",
+      "practise": "attention"
+    },
+    "practiceGoal": "Score query–key pairs, apply stable softmax, and combine values using the resulting weights.",
+    "order": 7
   },
   {
     "id": "retrieval",
     "track": "ai",
-    "title": "Retrieval & grounded answers",
+    "title": "Retrieval for grounded answers",
     "level": "Advanced",
-    "description": "Retrieve evidence before asking a model to answer.",
+    "description": "Retrieve relevant evidence for a question and evaluate the retrieval stage before generating an answer.",
     "sections": [
       {
         "title": "The mental model",
@@ -1235,10 +1654,13 @@
     ],
     "solution": "function rank(query,docs) {\n const tokens=s=>s.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);\n const q=new Set(tokens(query));\n return docs.map((d,i)=>({i,score:[...new Set(tokens(d))].filter(x=>q.has(x)).length}))\n .sort((a,b)=>b.score-a.score||a.i-b.i).map(x=>x.i);\n}",
     "video": {
-      "id": "7xTGNNLPyMI",
-      "title": "Deep Dive into LLMs like ChatGPT",
-      "creator": "Andrej Karpathy",
-      "note": "A broad companion lecture covering tokenization, training, and inference. Reused across the later AI lessons; it is not a dedicated RAG tutorial."
+      "id": "T-D1OfcDW1M",
+      "title": "What is Retrieval-Augmented Generation (RAG)?",
+      "creator": "IBM Technology",
+      "sourceUrl": "https://www.youtube.com/watch?v=T-D1OfcDW1M",
+      "topicId": "retrieval",
+      "note": "Follow the retrieval stage of RAG and how evidence reaches the generator. Our exercise implements an inspectable lexical retriever for that stage; it does not call a model or generate an answer.",
+      "reviewedAt": "2026-11-02"
     },
     "source": "https://arxiv.org/abs/2005.11401",
     "tags": [
@@ -1248,217 +1670,41 @@
     "minutes": 45,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
-  },
-  {
-    "id": "evaluation",
-    "track": "ai",
-    "title": "Evaluation & failure analysis",
-    "level": "Advanced",
-    "description": "Turn a convincing demo into measurable evidence.",
-    "sections": [
-      {
-        "title": "The mental model",
-        "body": "An evaluation is a repeatable test of behavior against explicit criteria. For classifiers, accuracy measures overall correctness, precision measures how many positive predictions are correct, and recall measures how many actual positives were found. These metrics answer different questions. For generative systems, use task-specific checks, groundedness review, and human assessment rather than one universal score."
-      },
-      {
-        "title": "Work through an example",
-        "body": "For actual labels [1,1,0,0] and predicted labels [1,0,1,0], there is one true positive, one false positive, and one false negative. Precision and recall are both 0.5. A model that always predicts the majority class can have high accuracy on imbalanced data yet be useless for finding rare events. Always compare with such simple baselines."
-      },
-      {
-        "title": "Engineering judgement",
-        "body": "Keep evaluation cases versioned and separate from tuning examples. Break failures down by category, input length, and user task. Track latency and cost alongside quality. Small datasets have uncertainty; a tiny average improvement may be noise. For retrieval, inspect recall at k and the quality of cited evidence. For tool-using systems, test incorrect tool arguments and unsafe instruction following."
-      }
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "vectors",
+      "evaluation",
+      "ai-systems",
+      "attention"
     ],
-    "question": "Implement metrics(actual, predicted) for 0/1 labels. Return {precision, recall}. If a denominator is zero, return 0 for that metric. Arrays have equal length.",
-    "functionName": "metrics",
-    "starter": "function metrics(actual, predicted) {\n  // Write your solution here\n}\n",
-    "tests": [
-      {
-        "args": [
-          [
-            1,
-            1,
-            0,
-            0
-          ],
-          [
-            1,
-            0,
-            1,
-            0
-          ]
-        ],
-        "expected": {
-          "precision": 0.5,
-          "recall": 0.5
-        },
-        "label": "Mixed outcomes"
-      },
-      {
-        "args": [
-          [
-            1
-          ],
-          [
-            1
-          ]
-        ],
-        "expected": {
-          "precision": 1,
-          "recall": 1
-        },
-        "label": "Perfect positive"
-      },
-      {
-        "args": [
-          [
-            0,
-            0
-          ],
-          [
-            0,
-            0
-          ]
-        ],
-        "expected": {
-          "precision": 0,
-          "recall": 0
-        },
-        "label": "Zero denominators"
-      },
-      {
-        "args": [
-          [
-            1,
-            1
-          ],
-          [
-            0,
-            0
-          ]
-        ],
-        "expected": {
-          "precision": 0,
-          "recall": 0
-        },
-        "label": "Missed positives"
-      }
-    ],
-    "solution": "function metrics(actual,predicted) {\n let tp=0,fp=0,fn=0;\n actual.forEach((a,i)=>{if(predicted[i]===1){if(a===1)tp++;else fp++;}else if(a===1)fn++;});\n return {precision:tp+fp?tp/(tp+fp):0,recall:tp+fn?tp/(tp+fn):0};\n}",
-    "video": {
-      "id": "7xTGNNLPyMI",
-      "title": "Deep Dive into LLMs like ChatGPT",
-      "creator": "Andrej Karpathy",
-      "note": "A broad companion lecture covering tokenization, training, and inference. Reused across the later AI lessons; it is not a dedicated RAG tutorial."
+    "learningObjective": "Retrieve relevant evidence for a question and evaluate the retrieval stage before generating an answer.",
+    "topicId": "retrieval",
+    "alignment": {
+      "read": "retrieval",
+      "watch": "retrieval",
+      "practise": "retrieval"
     },
-    "source": "https://scikit-learn.org/stable/modules/model_evaluation.html",
-    "tags": [
-      "Evals",
-      "Metrics"
-    ],
-    "minutes": 45,
-    "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
-    "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
-  },
-  {
-    "id": "ai-systems",
-    "track": "ai",
-    "title": "Reliable AI systems",
-    "level": "Advanced",
-    "description": "Put validation, budgets, and observability around models.",
-    "sections": [
-      {
-        "title": "The mental model",
-        "body": "An AI application is a system around a probabilistic component. Give each boundary a contract: accepted input, expected output shape, timeout behavior, and failure handling. Separate trusted application policy from user and retrieved content. Validate structured outputs before using them. Require explicit authorization for consequential tool actions rather than treating generated text as permission."
-      },
-      {
-        "title": "Work through an example",
-        "body": "A generated request such as {action:\"search\", query:\"cache design\"} should pass a schema before reaching a tool. An unknown action, missing string, or excessively long query should fail with a clear reason. A retry may fix a transient failure, but it needs a bounded budget and should not repeat an irreversible side effect."
-      },
-      {
-        "title": "Engineering judgement",
-        "body": "Measure end-to-end quality, tail latency, cost per successful task, and fallback rate. Cache with model and prompt versions in the key. Log enough for debugging while keeping secrets and unnecessary personal data out. If a public web app needs a private model key, route requests through an authenticated server; never put that key in static GitHub Pages code. This learning hub runs local exercises without a model API."
-      }
-    ],
-    "question": "Implement validRequest(value). Accept only a non-array object with action exactly \"search\" and a query string whose trimmed length is 1–200. Return a boolean.",
-    "functionName": "validRequest",
-    "starter": "function validRequest(value) {\n  // Write your solution here\n}\n",
-    "tests": [
-      {
-        "args": [
-          {
-            "action": "search",
-            "query": "cache"
-          }
-        ],
-        "expected": true,
-        "label": "Valid request"
-      },
-      {
-        "args": [
-          {
-            "action": "delete",
-            "query": "cache"
-          }
-        ],
-        "expected": false,
-        "label": "Unsupported action"
-      },
-      {
-        "args": [
-          {
-            "action": "search",
-            "query": "   "
-          }
-        ],
-        "expected": false,
-        "label": "Empty query"
-      },
-      {
-        "args": [
-          null
-        ],
-        "expected": false,
-        "label": "Null input"
-      }
-    ],
-    "solution": "function validRequest(value) {\n return !!value && typeof value===\"object\" && !Array.isArray(value) &&\n value.action===\"search\" && typeof value.query===\"string\" &&\n value.query.trim().length>=1 && value.query.trim().length<=200;\n}",
-    "video": {
-      "id": "7xTGNNLPyMI",
-      "title": "Deep Dive into LLMs like ChatGPT",
-      "creator": "Andrej Karpathy",
-      "note": "A broad companion lecture covering tokenization, training, and inference. Reused across the later AI lessons; it is not a dedicated RAG tutorial."
-    },
-    "source": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
-    "tags": [
-      "Architecture",
-      "Validation"
-    ],
-    "minutes": 45,
-    "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
-    "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "practiceGoal": "Retrieve relevant evidence for a question and evaluate the retrieval stage before generating an answer.",
+    "order": 8
   },
   {
     "id": "semantic-html",
     "track": "frontend",
-    "title": "Semantic HTML & accessibility",
+    "title": "Accessible names & form labels",
     "level": "Foundation",
-    "description": "Build interfaces that communicate structure and intent.",
+    "description": "Give interactive controls meaningful accessible names using native labels and appropriate ARIA overrides.",
     "sections": [
       {
         "title": "The mental model",
-        "body": "HTML is a document language with built-in interaction semantics. Use buttons for actions, anchors for navigation, headings for structure, and labels for form controls. A real button brings keyboard interaction and accessibility semantics that a clickable div does not. Accessibility begins with the structure of the page, before styling or ARIA attributes."
+        "body": "Interactive HTML controls need meaningful accessible names. A native label connected to an input supplies a programmatic name; aria-label can provide an explicit name where appropriate. A placeholder is a hint, not a stable substitute for a label. Prefer native controls so keyboard behavior and semantics come with the element. This lesson focuses on how controls are named, rather than a general tour of all accessibility techniques."
       },
       {
         "title": "Work through an example",
-        "body": "A search input needs a programmatic name through a label, not only a placeholder that disappears while typing. A progress update can use a polite live region so assistive technology announces it without moving focus. A modal must manage initial focus, contain keyboard focus, and restore focus when closed. Test these behaviors with a keyboard."
+        "body": "For a search input, a label such as Search lessons tells assistive technology what the control is for. In the simplified exercise, a nonempty ariaLabel takes precedence over label, and a blank override falls back to the label. Trim both strings. If neither supplies a name, return null. Real browser name computation also handles aria-labelledby, native text, hidden content, and other rules; this challenge deliberately models only its stated subset."
       },
       {
         "title": "Engineering judgement",
-        "body": "Use native elements before adding ARIA. A hidden visual label can still name a control, but aria-hidden content cannot. Good contrast, visible focus, useful error text, and sufficient target size matter together. Automated checks catch some mistakes; screen-reader and keyboard checks reveal others. The HTML/CSS playground lets you prototype accessible structure and inspect it in the live preview."
+        "body": "Check controls that have a native label, an explicit ARIA name, an empty ARIA override, and only a placeholder. Keep visible wording and programmatic names consistent so people using voice input can refer to the text they see. The video demonstrates labels and accessible names on real controls; the exercise makes the naming precedence explicit. Try a native label/input pair in the HTML/CSS playground after completing the predicate."
       }
     ],
     "question": "Implement accessibleName(control). This simplified exercise accepts {label, ariaLabel, placeholder}. Return the trimmed nonempty ariaLabel first, otherwise label, otherwise null. A placeholder is not accepted as a label.",
@@ -1506,10 +1752,13 @@
     ],
     "solution": "function accessibleName(control) {\n for(const v of [control.ariaLabel,control.label]) if(typeof v===\"string\"&&v.trim()) return v.trim();\n return null;\n}",
     "video": {
-      "id": "MsnQ5uepIaE",
-      "title": "Frontend Web Development: In-Depth Project Tutorial",
-      "creator": "freeCodeCamp · Zach Gollwitzer",
-      "note": "A shared project-based companion course for this track: HTML, CSS, JavaScript, TypeScript, and React. Watch the relevant section rather than repeating the entire course."
+      "id": "8dCUzOiMRy4",
+      "title": "The art of labeling -- A11ycasts #12",
+      "creator": "Chrome for Developers",
+      "sourceUrl": "https://www.youtube.com/watch?v=8dCUzOiMRy4",
+      "topicId": "semantic-html",
+      "note": "Follow how controls receive accessible names and why placeholders are insufficient. Our exercise models only the label and aria-label subset; it is not the complete browser accessible-name algorithm.",
+      "reviewedAt": "2026-11-02"
     },
     "source": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/HTML",
     "tags": [
@@ -1519,14 +1768,24 @@
     "minutes": 30,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [],
+    "learningObjective": "Give interactive controls meaningful accessible names using native labels and appropriate ARIA overrides.",
+    "topicId": "semantic-html",
+    "alignment": {
+      "read": "semantic-html",
+      "watch": "semantic-html",
+      "practise": "semantic-html"
+    },
+    "practiceGoal": "Give interactive controls meaningful accessible names using native labels and appropriate ARIA overrides.",
+    "order": 1
   },
   {
     "id": "css-layout",
     "track": "frontend",
-    "title": "CSS layout & responsive design",
+    "title": "Responsive grids & column sizing",
     "level": "Foundation",
-    "description": "Create layouts that adapt to content and available space.",
+    "description": "Fit minimum-width cards into a responsive grid while accounting for the gaps between columns.",
     "sections": [
       {
         "title": "The mental model",
@@ -1584,10 +1843,16 @@
     ],
     "solution": "function columns(width,minimum,gap) {\n return Math.max(1,Math.floor((width+gap)/(minimum+gap)));\n}",
     "video": {
-      "id": "MsnQ5uepIaE",
-      "title": "Frontend Web Development: In-Depth Project Tutorial",
-      "creator": "freeCodeCamp · Zach Gollwitzer",
-      "note": "A shared project-based companion course for this track: HTML, CSS, JavaScript, TypeScript, and React. Watch the relevant section rather than repeating the entire course."
+      "id": "sKFW3wek21Q",
+      "title": "Learn how to create a responsive CSS grid layout",
+      "creator": "Kevin Powell",
+      "sourceUrl": "https://www.youtube.com/watch?v=sKFW3wek21Q",
+      "topicId": "css-layout",
+      "note": "Focus on making the grid dynamic with auto-fit and fixing narrow-screen behavior. The exercise computes the same column-capacity constraint before you try a visual version in the HTML/CSS playground.",
+      "reviewedAt": "2026-11-02",
+      "start": 1132,
+      "end": 1351,
+      "segmentTitle": "Dynamic grids with auto-fit"
     },
     "source": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout",
     "tags": [
@@ -1597,26 +1862,38 @@
     "minutes": 30,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "semantic-html"
+    ],
+    "learningObjective": "Fit minimum-width cards into a responsive grid while accounting for the gaps between columns.",
+    "topicId": "css-layout",
+    "alignment": {
+      "read": "css-layout",
+      "watch": "css-layout",
+      "practise": "css-layout"
+    },
+    "practiceGoal": "Fit minimum-width cards into a responsive grid while accounting for the gaps between columns.",
+    "order": 2
   },
   {
     "id": "javascript",
     "track": "frontend",
-    "title": "JavaScript data & closures",
+    "title": "JavaScript arrays & immutable updates",
     "level": "Foundation",
-    "description": "Understand values, references, and lexical scope.",
+    "description": "Transform an array into a new array and replace the changed object without mutating the original state.",
     "sections": [
       {
-        "title": "The mental model",
-        "body": "Primitive values such as numbers and strings behave differently from references to objects. Copying an array with a spread creates a new outer array but leaves nested object references shared. Functions capture lexical bindings from where they are created; this is a closure. Closures power event handlers, memoization, and private state."
+        "title": "Transform values without changing the input",
+        "body": "An array is an ordered collection, and map builds a new array by applying a callback to each element. An array of objects contains references to those objects. Creating a new outer array does not by itself clone each object. An immutable update therefore replaces the changed object and the outer array while leaving the original values untouched."
       },
       {
-        "title": "Work through an example",
-        "body": "A counter factory can create a private count variable and return a function that increments it. Two factories produce independent environments. In UI code, closures can also capture a value from an older render. Understanding what a function captured and when it runs is more useful than treating every stale value as a framework mystery."
+        "title": "Update exactly one todo",
+        "body": "Given [{id: 1, done: false}, {id: 2, done: true}], mapping over the list lets you return {...todo, done: !todo.done} only for the matching ID. Return each other item unchanged. The new list represents the next state. The original list must still contain the original done values. The exercise checks value behavior and runs the function against frozen inputs to expose mutation."
       },
       {
-        "title": "Engineering judgement",
-        "body": "Prefer transformations that make changes explicit. If a list of todos is used as state, replacing the changed todo object and the outer array makes identity changes predictable. A shallow copy is enough when you replace the only nested object that changes; deeper structures need corresponding copies along the changed path. Avoid serializing to JSON as a general-purpose clone."
+        "title": "Know what a shallow copy guarantees",
+        "body": "The spread operator makes a shallow object copy: nested objects inside it are still shared unless you replace them too. Copy along the path of the change rather than using JSON serialization as a universal clone. An unknown ID should yield an equivalent new list, and an empty list should remain empty. This array-transformation skill is used by the later pure-function and derived-React-state lessons."
       }
     ],
     "question": "Implement toggleTodo(todos, id). Return a new array with a new object for the matching todo and its done value inverted. Other values should be preserved. Do not mutate the input.",
@@ -1688,12 +1965,15 @@
     ],
     "solution": "function toggleTodo(todos,id) {\n return todos.map(todo=>todo.id===id?{...todo,done:!todo.done}:todo);\n}",
     "video": {
-      "id": "MsnQ5uepIaE",
-      "title": "Frontend Web Development: In-Depth Project Tutorial",
-      "creator": "freeCodeCamp · Zach Gollwitzer",
-      "note": "A shared project-based companion course for this track: HTML, CSS, JavaScript, TypeScript, and React. Watch the relevant section rather than repeating the entire course."
+      "id": "R8rmfD9Y5-c",
+      "title": "8 Must Know JavaScript Array Methods",
+      "creator": "Web Dev Simplified",
+      "sourceUrl": "https://www.youtube.com/watch?v=R8rmfD9Y5-c",
+      "topicId": "javascript",
+      "note": "Follow how map creates a new array from existing items. Apply map to update one todo, returning a new object for the changed item and preserving the original input.",
+      "reviewedAt": "2026-11-02"
     },
-    "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+    "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map",
     "tags": [
       "JavaScript",
       "Immutability"
@@ -1701,26 +1981,130 @@
     "minutes": 30,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [],
+    "learningObjective": "Transform an array into a new array and replace the changed object without mutating the original state.",
+    "topicId": "javascript",
+    "alignment": {
+      "read": "javascript",
+      "watch": "javascript",
+      "practise": "javascript"
+    },
+    "practiceGoal": "Transform an array into a new array and replace the changed object without mutating the original state.",
+    "order": 3
+  },
+  {
+    "id": "frontend-architecture",
+    "track": "frontend",
+    "title": "Pure functions & testable UI logic",
+    "level": "Core",
+    "description": "Keep a UI calculation pure so it can be checked with repeatable input/output tests.",
+    "sections": [
+      {
+        "title": "Keep a calculation pure",
+        "body": "A pure function returns the same result for the same input and does not change state outside itself. It does not read the clock, write storage, manipulate the DOM, or mutate its arguments. Moving a UI calculation into such a function makes the contract visible. Rendering and persistence can then use the result without being mixed into the arithmetic."
+      },
+      {
+        "title": "Derive a progress percentage",
+        "body": "For a progress record, count the read, watched, and practised flags that are truthy. Divide the count by three, multiply by one hundred, and round. One completed activity gives 33; two give 67; all three give 100. Missing progress gives zero. The exercise implements this calculation independently of any framework, storage service, or screen."
+      },
+      {
+        "title": "Test observable behavior and preserve the input",
+        "body": "Repeatable input/output checks are a natural fit for pure functions. Test missing input, an empty record, partial completion, and full completion. Keep the original record unchanged after the call. The browser can store the source progress record and derive the percentage when displaying it, rather than saving a second percentage value that could become inconsistent. Later lessons reuse this separation for React filtering and async state updates."
+      }
+    ],
+    "question": "Implement completion(progress), returning a rounded percentage of truthy read, watched, and practised flags. A missing progress object counts as no completed activities.",
+    "functionName": "completion",
+    "starter": "function completion(progress) {\n  // Write your solution here\n}\n",
+    "tests": [
+      {
+        "args": [
+          {
+            "read": true,
+            "watched": true,
+            "practised": true
+          }
+        ],
+        "expected": 100,
+        "label": "All complete"
+      },
+      {
+        "args": [
+          {
+            "read": true
+          }
+        ],
+        "expected": 33,
+        "label": "One activity"
+      },
+      {
+        "args": [
+          {
+            "read": true,
+            "practised": true
+          }
+        ],
+        "expected": 67,
+        "label": "Two activities"
+      },
+      {
+        "args": [
+          null
+        ],
+        "expected": 0,
+        "label": "No progress"
+      }
+    ],
+    "solution": "function completion(progress) {\n return Math.round([\"read\",\"watched\",\"practised\"].filter(k=>progress?.[k]).length/3*100);\n}",
+    "video": {
+      "id": "fYbhD_KMCOg",
+      "title": "Learn Pure Functions In 10 Minutes",
+      "creator": "Web Dev Simplified",
+      "sourceUrl": "https://www.youtube.com/watch?v=fYbhD_KMCOg",
+      "topicId": "frontend-architecture",
+      "note": "Identify deterministic output and the absence of side effects. Our progress-percentage function is an example of the same pure calculation, tested with partial, complete, and missing input.",
+      "reviewedAt": "2026-11-02"
+    },
+    "source": "https://www.youtube.com/watch?v=fYbhD_KMCOg",
+    "tags": [
+      "Testing",
+      "Architecture"
+    ],
+    "minutes": 45,
+    "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
+    "sourceLabel": "Creator / primary reference",
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "javascript"
+    ],
+    "learningObjective": "Keep a UI calculation pure so it can be checked with repeatable input/output tests.",
+    "topicId": "frontend-architecture",
+    "alignment": {
+      "read": "frontend-architecture",
+      "watch": "frontend-architecture",
+      "practise": "frontend-architecture"
+    },
+    "practiceGoal": "Keep a UI calculation pure so it can be checked with repeatable input/output tests.",
+    "order": 4
   },
   {
     "id": "async",
     "track": "frontend",
-    "title": "Async JavaScript & the event loop",
+    "title": "Async requests & stale responses",
     "level": "Core",
-    "description": "Handle ordering, loading, errors, and cancellation.",
+    "description": "Prevent an obsolete asynchronous request from overwriting the result of a newer request.",
     "sections": [
       {
-        "title": "The mental model",
-        "body": "JavaScript executes synchronous code on a call stack. Promise callbacks run as microtasks after the current synchronous work finishes; timers schedule later tasks. Async functions return promises, and await yields rather than blocking the browser thread. UI code must account for requests completing in an order different from the order they started."
+        "title": "Requests can finish out of order",
+        "body": "An asynchronous operation can complete after a newer operation has started. A search for re may take longer than the following search for react. If the older response is allowed to update the interface last, it overwrites the newer results. Treat the right to commit a result as a separate decision from whether a request happened to finish successfully."
       },
       {
-        "title": "Work through an example",
-        "body": "Consider a search for re followed quickly by react. If the slower re response arrives last, it can overwrite newer results. Associate each request with a monotonically increasing ID, and commit a response only if its ID still matches the latest request. AbortController can also cancel obsolete fetches, but state should still handle stale completions safely."
+        "title": "Give each request an identity",
+        "body": "Increase a request ID whenever a new search begins. Capture that ID when starting the request, and compare it with the current latest ID before committing the response. Only an equal pair may update the UI. The playground implements this exact commit boundary. It also rejects a response with an unknown future ID instead of assuming that a larger ID is automatically valid."
       },
       {
-        "title": "Engineering judgement",
-        "body": "Always represent loading, success, empty, and error states. A fetch resolves even for HTTP 404, so check response.ok before parsing a success result. Promise.all fails fast when one promise rejects; Promise.allSettled lets you inspect each outcome. Use cancellation and time budgets deliberately, and clean up subscriptions or requests when a view is no longer relevant."
+        "title": "Cancel obsolete work and still guard the commit",
+        "body": "AbortController lets a request receive a cancellation signal. The selected video chapter shows that cancellation mechanism. A request-ID guard is complementary: cancellation can arrive after work has completed, and some operations are not cancellable. Model loading, empty, success, and error states explicitly; treat cancellation as an expected outcome. Keep the guard even when you also cancel obsolete network work."
       }
     ],
     "question": "Implement shouldCommit(latestId, responseId). Return true only when the response belongs to the current request. This tiny guard is the state-commit boundary; add a race-condition explanation in your notes.",
@@ -1762,12 +2146,18 @@
     ],
     "solution": "function shouldCommit(latestId,responseId) {\n return latestId===responseId;\n}",
     "video": {
-      "id": "MsnQ5uepIaE",
-      "title": "Frontend Web Development: In-Depth Project Tutorial",
-      "creator": "freeCodeCamp · Zach Gollwitzer",
-      "note": "A shared project-based companion course for this track: HTML, CSS, JavaScript, TypeScript, and React. Watch the relevant section rather than repeating the entire course."
+      "id": "BeZfiCPhZbI",
+      "title": "I Cannot Believe Abort Controller Can Do This",
+      "creator": "Web Dev Simplified",
+      "sourceUrl": "https://www.youtube.com/watch?v=BeZfiCPhZbI",
+      "topicId": "async",
+      "note": "The selected chapter shows cancelling obsolete work with AbortController. The exercise practices the complementary commit guard: accept a result only when its request ID is current.",
+      "reviewedAt": "2026-11-02",
+      "start": 75,
+      "end": 139,
+      "segmentTitle": "Basic AbortController: cancelling obsolete work"
     },
-    "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop",
+    "source": "https://developer.mozilla.org/en-US/docs/Web/API/AbortController",
     "tags": [
       "Promises",
       "Race conditions"
@@ -1775,18 +2165,126 @@
     "minutes": 45,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "javascript",
+      "frontend-architecture"
+    ],
+    "learningObjective": "Prevent an obsolete asynchronous request from overwriting the result of a newer request.",
+    "topicId": "async",
+    "alignment": {
+      "read": "async",
+      "watch": "async",
+      "practise": "async"
+    },
+    "practiceGoal": "Prevent an obsolete asynchronous request from overwriting the result of a newer request.",
+    "order": 5
+  },
+  {
+    "id": "typescript",
+    "track": "frontend",
+    "title": "Runtime type guards & validation",
+    "level": "Core",
+    "description": "Check unknown input at runtime before treating it as a typed user object.",
+    "sections": [
+      {
+        "title": "Runtime data starts as unknown",
+        "body": "A TypeScript annotation describes an expected shape during development, but it does not validate JSON arriving at runtime. A type assertion does not check the value. A type guard performs actual checks before the program relies on a narrower type. For a user record, begin by checking for a non-null object and excluding arrays, then validate each required property."
+      },
+      {
+        "title": "Check the user contract",
+        "body": "The exercise accepts a positive integer id and a name string whose trimmed length is nonzero. Values such as {id: \"1\", name: \"Ada\"}, null, and {id: 1, name: \" \"} must fail. Extra properties are allowed by this particular contract. The function returns a boolean; in TypeScript, the same checked boundary can be wrapped with a predicate return type such as value is User."
+      },
+      {
+        "title": "Validate before using or storing the value",
+        "body": "Narrowing is useful only after the runtime checks are accurate. Avoid using any or an unchecked type assertion to make an uncertain external value appear safe. Decide whether extra fields are allowed, how empty strings are treated, and which numeric bounds apply. This playground executes the JavaScript validation logic; the video shows how that logic participates in TypeScript narrowing. Both activities are about the same user-shape boundary."
+      }
+    ],
+    "question": "Implement isUser(value). Accept a non-array object with an integer id > 0 and a nonempty trimmed string name. Extra properties are allowed.",
+    "functionName": "isUser",
+    "starter": "function isUser(value) {\n  // Write your solution here\n}\n",
+    "tests": [
+      {
+        "args": [
+          {
+            "id": 1,
+            "name": "Ada"
+          }
+        ],
+        "expected": true,
+        "label": "Valid user"
+      },
+      {
+        "args": [
+          {
+            "id": "1",
+            "name": "Ada"
+          }
+        ],
+        "expected": false,
+        "label": "Wrong id type"
+      },
+      {
+        "args": [
+          {
+            "id": 1,
+            "name": " "
+          }
+        ],
+        "expected": false,
+        "label": "Empty name"
+      },
+      {
+        "args": [
+          null
+        ],
+        "expected": false,
+        "label": "Null boundary"
+      }
+    ],
+    "solution": "function isUser(value) {\n return !!value && typeof value===\"object\" && !Array.isArray(value) &&\n Number.isInteger(value.id)&&value.id>0&&typeof value.name===\"string\"&&value.name.trim().length>0;\n}",
+    "video": {
+      "id": "p-YEN-9KnRo",
+      "title": "Custom Type Guards in TypeScript",
+      "creator": "TypeScript with Benny Code",
+      "sourceUrl": "https://www.youtube.com/watch?v=p-YEN-9KnRo",
+      "topicId": "typescript",
+      "note": "Follow how a type guard checks values before narrowing a type. Our JavaScript challenge implements the runtime checks that a TypeScript user-defined type guard would wrap.",
+      "reviewedAt": "2026-11-02"
+    },
+    "source": "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
+    "tags": [
+      "TypeScript",
+      "Validation"
+    ],
+    "minutes": 45,
+    "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
+    "sourceLabel": "Creator / primary reference",
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "javascript",
+      "frontend-architecture"
+    ],
+    "learningObjective": "Check unknown input at runtime before treating it as a typed user object.",
+    "topicId": "typescript",
+    "alignment": {
+      "read": "typescript",
+      "watch": "typescript",
+      "practise": "typescript"
+    },
+    "practiceGoal": "Check unknown input at runtime before treating it as a typed user object.",
+    "order": 6
   },
   {
     "id": "react-state",
     "track": "frontend",
-    "title": "React thinking & state design",
+    "title": "React state & derived product filters",
     "level": "Core",
-    "description": "Keep one source of truth and derive the rest.",
+    "description": "Store minimal React state and derive visible products from the query and stock toggle.",
     "sections": [
       {
         "title": "The mental model",
-        "body": "A component is a unit of UI and behavior. Props carry data from a parent; state stores information that changes through interaction. Keep state as small as possible: if a value can be computed from existing state and props, derive it during rendering. Duplicate state creates synchronization work and inconsistent interfaces."
+        "body": "A React component is a function that describes UI. Props supply data from its parent, and useState stores values changed by interaction. For a filterable list, state can hold a query string and an onlyStocked flag, while products arrive as props. A setter schedules a new render. Compute visible products from those inputs instead of storing a second filtered list that must be synchronized."
       },
       {
         "title": "Work through an example",
@@ -1794,7 +2292,7 @@
       },
       {
         "title": "Engineering judgement",
-        "body": "State belongs at the nearest common owner that needs to coordinate it. Effects synchronize with systems outside React; they are often unnecessary for a simple transformation of props. For async work, manage cleanup and stale responses. Begin with a static component tree, add state intentionally, and extract abstractions after the repeated behavior is clear."
+        "body": "Keep the visible-products calculation pure: the same products, query, and stock flag should give the same result without changing any product. Derive the list during rendering, and derive its count from its length. An effect is unnecessary just to mirror a filter result into another state variable. The video identifies that duplicate-state mistake, and the playground implements the filtering calculation that avoids it. Test an empty query, a case-insensitive match, unstocked products, and an empty list."
       }
     ],
     "question": "Implement visibleProducts(products, query, onlyStocked). Match name case-insensitively using includes, and filter unstocked products only when onlyStocked is true. Preserve order.",
@@ -1874,10 +2372,13 @@
     ],
     "solution": "function visibleProducts(products,query,onlyStocked) {\n return products.filter(p=>p.name.toLowerCase().includes(query.toLowerCase())&&(!onlyStocked||p.stocked));\n}",
     "video": {
-      "id": "MsnQ5uepIaE",
-      "title": "Frontend Web Development: In-Depth Project Tutorial",
-      "creator": "freeCodeCamp · Zach Gollwitzer",
-      "note": "A shared project-based companion course for this track: HTML, CSS, JavaScript, TypeScript, and React. Watch the relevant section rather than repeating the entire course."
+      "id": "tz0fDABt67g",
+      "title": "Every Beginner React Developer Makes This Mistake With State",
+      "creator": "Web Dev Simplified",
+      "sourceUrl": "https://www.youtube.com/watch?v=tz0fDABt67g",
+      "topicId": "react-state",
+      "note": "Follow the derived-state problem and its fix. The exercise extracts the product-filtering calculation that should be derived during rendering instead of stored as duplicate state.",
+      "reviewedAt": "2026-11-02"
     },
     "source": "https://react.dev/learn/thinking-in-react",
     "tags": [
@@ -1887,105 +2388,41 @@
     "minutes": 45,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
-  },
-  {
-    "id": "typescript",
-    "track": "frontend",
-    "title": "TypeScript & runtime boundaries",
-    "level": "Core",
-    "description": "Use types to express valid states, then validate real data.",
-    "sections": [
-      {
-        "title": "The mental model",
-        "body": "TypeScript checks a program before it runs. A discriminated union can model a request as idle, loading, success with data, or error with a message. Narrowing on the status field makes the corresponding payload available. This prevents states such as success without data from being representable in properly typed application code."
-      },
-      {
-        "title": "Work through an example",
-        "body": "Network JSON still arrives at runtime and may not match a declared interface. Treat it as unknown, check that it is a non-null non-array object, then validate each required property. A type assertion does not perform those checks. Once the validator succeeds, the application can work with a narrower and more trustworthy shape."
-      },
-      {
-        "title": "Engineering judgement",
-        "body": "Keep external schemas versioned and decide how to handle extra fields. Avoid using any to silence uncertainty at boundaries; it spreads unchecked assumptions. Static types improve feedback but cannot prove accessibility, server authorization, or the truth of generated model output. This playground runs JavaScript; the exercise implements the runtime guard that a TypeScript type predicate would wrap."
-      }
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "javascript",
+      "frontend-architecture",
+      "async",
+      "typescript"
     ],
-    "question": "Implement isUser(value). Accept a non-array object with an integer id > 0 and a nonempty trimmed string name. Extra properties are allowed.",
-    "functionName": "isUser",
-    "starter": "function isUser(value) {\n  // Write your solution here\n}\n",
-    "tests": [
-      {
-        "args": [
-          {
-            "id": 1,
-            "name": "Ada"
-          }
-        ],
-        "expected": true,
-        "label": "Valid user"
-      },
-      {
-        "args": [
-          {
-            "id": "1",
-            "name": "Ada"
-          }
-        ],
-        "expected": false,
-        "label": "Wrong id type"
-      },
-      {
-        "args": [
-          {
-            "id": 1,
-            "name": " "
-          }
-        ],
-        "expected": false,
-        "label": "Empty name"
-      },
-      {
-        "args": [
-          null
-        ],
-        "expected": false,
-        "label": "Null boundary"
-      }
-    ],
-    "solution": "function isUser(value) {\n return !!value && typeof value===\"object\" && !Array.isArray(value) &&\n Number.isInteger(value.id)&&value.id>0&&typeof value.name===\"string\"&&value.name.trim().length>0;\n}",
-    "video": {
-      "id": "MsnQ5uepIaE",
-      "title": "Frontend Web Development: In-Depth Project Tutorial",
-      "creator": "freeCodeCamp · Zach Gollwitzer",
-      "note": "A shared project-based companion course for this track: HTML, CSS, JavaScript, TypeScript, and React. Watch the relevant section rather than repeating the entire course."
+    "learningObjective": "Store minimal React state and derive visible products from the query and stock toggle.",
+    "topicId": "react-state",
+    "alignment": {
+      "read": "react-state",
+      "watch": "react-state",
+      "practise": "react-state"
     },
-    "source": "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
-    "tags": [
-      "TypeScript",
-      "Validation"
-    ],
-    "minutes": 45,
-    "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
-    "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "practiceGoal": "Store minimal React state and derive visible products from the query and stock toggle.",
+    "order": 7
   },
   {
     "id": "performance",
     "track": "frontend",
-    "title": "Performance & resilient UI",
+    "title": "LRU caches for frontend data",
     "level": "Advanced",
-    "description": "Measure the user experience and handle failures deliberately.",
+    "description": "Keep a bounded data cache and evict the least recently used entry after each access.",
     "sections": [
       {
-        "title": "The mental model",
-        "body": "Performance is about user-visible delays and stability. Network waterfalls reveal resource dependencies; a performance profile reveals long tasks and rendering costs. Optimize measured bottlenecks. Smaller JavaScript payloads, deferred nonessential work, reserved image space, and responsive event handlers often improve experience more than micro-optimizing a loop."
+        "title": "A bounded cache needs an eviction policy",
+        "body": "A frontend can reuse data already loaded for a key, but an unbounded cache keeps growing. Least recently used eviction removes the entry that has gone longest without being accessed. Every hit refreshes recency, as does inserting a new key. The cache must maintain both membership and the order of use; a set of keys alone does not capture the policy."
       },
       {
-        "title": "Work through an example",
-        "body": "A large list can be filtered once and rendered in a visible window rather than repeatedly rebuilding every row. A cache can reuse results for repeated inputs, but it needs a capacity limit and an invalidation policy. Least recently used eviction discards the entry that has gone the longest without being accessed. Reading a key must update its recency."
+        "title": "Trace the same access sequence",
+        "body": "With capacity two and accesses [a, b, a, c], the order after the first two accesses is [a, b]. Accessing a moves it to the most-recent end, producing [b, a]. Inserting c exceeds capacity, so b is evicted and the order becomes [a, c]. The exercise returns keys from least recently used to most recently used after every access has been processed."
       },
       {
-        "title": "Engineering judgement",
-        "body": "A fast happy path is insufficient. Build loading, empty, offline, and error states that preserve user work. Keep expensive computations off the main thread when possible. Measure before and after with the same representative workload, and watch memory as well as speed. The exercise models a bounded cache; real cache policy also depends on freshness and data sensitivity."
+        "title": "Separate recency from freshness",
+        "body": "A JavaScript Map preserves insertion order, so removing and reinserting a key can model recency for this exercise. In the linked implementation, a hash map and doubly linked list make the same ordering explicit. Capacity zero retains no entries. A production data cache also needs freshness rules, appropriate cache keys, and limits for sensitive data; LRU alone does not decide when a cached answer is still valid."
       }
     ],
     "question": "Implement cacheKeys(capacity, accesses), simulating an LRU cache. Each access inserts or refreshes the key. Return keys from least to most recently used. Capacity is a nonnegative integer.",
@@ -2042,12 +2479,15 @@
     ],
     "solution": "function cacheKeys(capacity,accesses) {\n const cache=new Map();\n for(const key of accesses) {cache.delete(key);cache.set(key,true);if(cache.size>capacity)cache.delete(cache.keys().next().value);}\n return [...cache.keys()];\n}",
     "video": {
-      "id": "MsnQ5uepIaE",
-      "title": "Frontend Web Development: In-Depth Project Tutorial",
-      "creator": "freeCodeCamp · Zach Gollwitzer",
-      "note": "A shared project-based companion course for this track: HTML, CSS, JavaScript, TypeScript, and React. Watch the relevant section rather than repeating the entire course."
+      "id": "7ABFKPK2hD4",
+      "title": "LRU Cache - Twitch Interview Question - Leetcode 146",
+      "creator": "NeetCode",
+      "sourceUrl": "https://www.youtube.com/watch?v=7ABFKPK2hD4",
+      "topicId": "performance",
+      "note": "Trace cache hits, recency updates, and eviction. Our exercise simulates the same LRU policy and returns keys from least to most recently used.",
+      "reviewedAt": "2026-11-02"
     },
-    "source": "https://web.dev/learn/performance",
+    "source": "https://neetcode.io/solutions/lru-cache",
     "tags": [
       "Performance",
       "Caching"
@@ -2055,85 +2495,20 @@
     "minutes": 45,
     "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
     "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
-  },
-  {
-    "id": "frontend-architecture",
-    "track": "frontend",
-    "title": "Testing & frontend architecture",
-    "level": "Advanced",
-    "description": "Make boundaries and behavior explicit as the app grows.",
-    "sections": [
-      {
-        "title": "The mental model",
-        "body": "An architecture is a set of decisions about responsibilities and dependencies. Separate pure domain transformations from storage, networking, and rendering so each can change with fewer side effects. Keep modules cohesive and interfaces small. A feature boundary is useful when it reflects real responsibilities, not just a preferred folder naming convention."
-      },
-      {
-        "title": "Work through an example",
-        "body": "A learning tracker can store lesson IDs with independent read, watched, and practised flags. A pure function derives completion from those flags; storage persists them and the UI displays them. Test that function with partial and complete progress. Then test one realistic user path through the browser to catch integration mistakes that unit checks miss."
-      },
-      {
-        "title": "Engineering judgement",
-        "body": "Choose tests by risk. Pure logic needs edge cases; user flows need observable outcomes. Avoid asserting every internal DOM detail, which can make harmless refactors expensive. Check keyboard navigation, persistence after reload, errors, and import/export. Treat migrations and malformed saved data as normal cases. Ship small changes with a reproducible deployment path and keep a rollback option."
-      }
+    "readingLabel": "Original Frontier field notes · read here",
+    "prerequisites": [
+      "javascript",
+      "hashing",
+      "react-state"
     ],
-    "question": "Implement completion(progress), returning a rounded percentage of truthy read, watched, and practised flags. A missing progress object counts as no completed activities.",
-    "functionName": "completion",
-    "starter": "function completion(progress) {\n  // Write your solution here\n}\n",
-    "tests": [
-      {
-        "args": [
-          {
-            "read": true,
-            "watched": true,
-            "practised": true
-          }
-        ],
-        "expected": 100,
-        "label": "All complete"
-      },
-      {
-        "args": [
-          {
-            "read": true
-          }
-        ],
-        "expected": 33,
-        "label": "One activity"
-      },
-      {
-        "args": [
-          {
-            "read": true,
-            "practised": true
-          }
-        ],
-        "expected": 67,
-        "label": "Two activities"
-      },
-      {
-        "args": [
-          null
-        ],
-        "expected": 0,
-        "label": "No progress"
-      }
-    ],
-    "solution": "function completion(progress) {\n return Math.round([\"read\",\"watched\",\"practised\"].filter(k=>progress?.[k]).length/3*100);\n}",
-    "video": {
-      "id": "MsnQ5uepIaE",
-      "title": "Frontend Web Development: In-Depth Project Tutorial",
-      "creator": "freeCodeCamp · Zach Gollwitzer",
-      "note": "A shared project-based companion course for this track: HTML, CSS, JavaScript, TypeScript, and React. Watch the relevant section rather than repeating the entire course."
+    "learningObjective": "Keep a bounded data cache and evict the least recently used entry after each access.",
+    "topicId": "performance",
+    "alignment": {
+      "read": "performance",
+      "watch": "performance",
+      "practise": "performance"
     },
-    "source": "https://testing-library.com/docs/guiding-principles/",
-    "tags": [
-      "Testing",
-      "Architecture"
-    ],
-    "minutes": 45,
-    "reflection": "Explain the invariant or contract in your own words. Record one failure case, the tradeoff you made, and what you would test next.",
-    "sourceLabel": "Creator / primary reference",
-    "readingLabel": "Original Frontier field notes · read here"
+    "practiceGoal": "Keep a bounded data cache and evict the least recently used entry after each access.",
+    "order": 8
   }
 ]

@@ -25,3 +25,12 @@ Third-party playback and CDN availability can change independently of the applic
 - A temporary note was confirmed saved and restored after a fresh page load.
 - Sign-out removes the workspace; a direct playground route remains behind the sign-in screen.
 - The isolated JavaScript worker reports SecurityError when attempting IndexedDB access, while normal JavaScript and Python execution still work.
+
+## Topic alignment and hierarchy update
+
+- Audited all 24 Read/Watch/Practise mappings and selected 24 distinct videos, checking titles/publishers against YouTube metadata and creator solution pages where applicable.
+- Replaced the vectors-to-attention mismatch, repeated frontend full-course video, generic LLM overview assignments, and mismatched data-structure lectures.
+- CSS auto-fit uses the creator's 18:52–22:31 chapter; async cancellation uses the 1:15–2:19 chapter. Embedded URLs include both start and end boundaries.
+- Ordered stages and explicit prerequisites are validated before rendering. Cycles, future prerequisites, activity swaps, and unfocused reused videos fail validation.
+- All 46 application tests pass, including all 96 reference-solution examples and six curriculum regression tests. The unchanged Firebase authorization suite remains part of CI.
+- Stable lesson IDs and exercise contracts preserve existing Firebase progress and drafts.

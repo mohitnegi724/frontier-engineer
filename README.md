@@ -10,7 +10,7 @@ Sign in with Google to open the app. Each account has a private Firebase profile
 
 - Follow **24 topics** across three learning paths, from foundations to advanced engineering concepts.
 - Read original, self-contained field notes with examples, tradeoffs, and credited primary references.
-- Watch curated companion lectures from MIT OpenCourseWare, 3Blue1Brown, Andrej Karpathy, and freeCodeCamp in embedded players. Some lectures accompany more than one topic; the watch view explains this.
+- Watch a focused, topic-matched video for every lesson, selected from MIT OpenCourseWare, NeetCode, StatQuest, 3Blue1Brown, Chrome for Developers, Kevin Powell, Web Dev Simplified, TypeScript with Benny Code, and Postman. Selected chapters start and stop at their topic boundaries.
 - Solve a challenge for every lesson, with **96 executable example checks**, starter code, and optional reference solutions.
 - Run JavaScript, Python, or an HTML/CSS/JavaScript preview in the browser.
 - Track **read**, **watched**, and **practised** separately. Read/watch completion is self-reported. Passing all lesson checks automatically completes practice; you can also mark practice yourself.
@@ -33,7 +33,7 @@ Open http://127.0.0.1:4173 in your browser. To choose another port, set `PORT` b
 npm run check
 ```
 
-This checks JavaScript syntax and runs 40 tests covering the curriculum, reference solutions, progress, account isolation, cloud synchronization, backups, migration, and code execution. `npm ci` installs tools for the additional seven Firestore authorization tests; run `npm run test:rules` with Java 21 or later installed. These tests use an isolated demo project, never production data.
+This checks JavaScript syntax and runs 46 tests covering the curriculum, reference solutions, progress, account isolation, cloud synchronization, backups, migration, and code execution. `npm ci` installs tools for the additional seven Firestore authorization tests; run `npm run test:rules` with Java 21 or later installed. These tests use an isolated demo project, never production data.
 
 ## Publish on GitHub Pages
 
@@ -93,8 +93,10 @@ Reading text and exercises in this repository are original educational explanati
 
 - [MIT 6.006 Introduction to Algorithms](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/)
 - [3Blue1Brown neural network lessons](https://www.3blue1brown.com/lessons/neural-networks)
-- [Andrej Karpathy's LLM deep dive](https://www.youtube.com/watch?v=7xTGNNLPyMI)
-- [freeCodeCamp frontend project course](https://www.freecodecamp.org/news/frontend-web-development-in-depth-project-tutorial)
+- [NeetCode problem explanations](https://neetcode.io/solutions)
+- [StatQuest video index](https://statquest.org/video_index.html)
+- [Chrome accessibility labeling lesson](https://www.youtube.com/watch?v=8dCUzOiMRy4)
+- [Web Dev Simplified](https://www.youtube.com/@WebDevSimplified)
 - [React: Thinking in React](https://react.dev/learn/thinking-in-react)
 - [MDN JavaScript Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
 - [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
@@ -104,7 +106,7 @@ Videos load from YouTube's privacy-enhanced embed domain only after you press pl
 
 ## Edit the curriculum
 
-Add or update objects in `site/curriculum.json`. Each lesson has a stable `id`, `track`, `title`, `level`, description, three reading sections, a practice question, function name, starter, test cases, reference solution, video metadata, and a primary source. Keep IDs stable so saved progress remains attached. Add exercises with meaningful failure cases and verify them with `npm run check`.
+Add or update objects in `site/curriculum.json`. Each lesson has a stable `id`, `track`, `title`, `level`, description, three reading sections, a practice question, function name, starter, test cases, reference solution, video metadata, and a primary source. Keep IDs stable so saved progress remains attached. Every lesson declares its path step, recommended prerequisite IDs, one shared learning objective, and matching Read/Watch/Practise topic associations. A focused video may declare both `start` and `end` in seconds. `site/curriculum.js` validates associations, consecutive steps, nondecreasing stages, prerequisite ordering/cycles, and chapter bounds before the app renders. Add exercises with meaningful failure cases and verify them with `npm run check`.
 
 ```text
 site/
@@ -116,7 +118,8 @@ site/
   firebase-client.js  Google Auth and Firestore transport
   firebase-config.js  Public Firebase web configuration
   isolated-runner.js  Opaque-origin code execution boundary
-  curriculum.json     24 lessons and 96 example checks
+  curriculum.json     24 aligned lessons, prerequisites, and 96 example checks
+  curriculum.js       Ordering, topic-association and video-chapter validation
   runner.js           JavaScript worker
   python-runner.js    Python worker
 scripts/server.mjs    Dependency-free local server
@@ -127,3 +130,9 @@ tests/               Curriculum, solution, storage and runner checks
 ## License
 
 App code and original reading/exercises are under the MIT license. Linked references, embedded media, fonts, and other third-party works retain their creators' licenses and rights. Inclusion does not imply endorsement.
+
+## Topic alignment and learning order
+
+[CURRICULUM_AUDIT.md](CURRICULUM_AUDIT.md) maps each numbered lesson to its shared objective, focused video, exercise, and prerequisites. Paths progress from Foundation through Core to Advanced. For example, AI introduces neurons before gradient descent and classifier metrics before retrieval evaluation. Frontend introduces immutable array transformations and pure logic before async state updates and React filtering. Prerequisites are recommended preparation, not access locks. All paths assume basic programming syntax; the JavaScript playground is used for the guided checks.
+
+The same stable lesson object supplies all three activity tabs. A video title may differ from the lesson title, but its connection to the objective and any exercise-contract differences are shown explicitly. Sources were reviewed on 2 November 2026; publisher-controlled availability and content can change later.

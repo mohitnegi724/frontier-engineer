@@ -17,8 +17,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install development test tools
+        run: npm ci
       - name: Check workspace and curriculum
         run: npm run check
+      - name: Verify private account database rules
+        run: npm run test:rules
   deploy:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && github.event.repository.private == false
     needs: verify

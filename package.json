@@ -4,7 +4,19 @@
   "private": true,
   "type": "module",
   "description": "A browser-based learning workspace for DS & Algorithms, AI, and Frontend.",
-  "scripts": {"start": "node scripts/server.mjs", "test": "node --test", "check": "node --check site/app.js && node --check site/runner.js && node --check site/python-runner.js && node --test"},
-  "engines": {"node": ">=22"},
-  "license": "MIT"
+  "scripts": {
+    "start": "node scripts/server.mjs",
+    "test": "node --test",
+    "check": "node --check site/app.js && node --check site/firebase-client.js && node --check site/cloud-sync.js && node --check site/runner.js && node --check site/python-runner.js && node --test",
+    "test:rules": "firebase emulators:exec --project demo-frontier-engineer --only firestore \"node --test tests/firestore.integration.mjs\""
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^6.0.0",
+    "firebase": "^13.1.0",
+    "firebase-tools": "^15.34.2"
+  }
 }

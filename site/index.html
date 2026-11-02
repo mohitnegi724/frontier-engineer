@@ -9,6 +9,21 @@
 <link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+<section id="auth-gate" class="auth-gate" aria-labelledby="auth-title">
+ <div class="auth-brand"><span class="brand-mark">f<span>↗</span></span><strong>frontier.</strong></div>
+ <div class="auth-card">
+  <p class="eyebrow">YOUR NEXT CHAPTER</p>
+  <span class="auth-symbol" aria-hidden="true">✳</span>
+  <h1 id="auth-title">Your frontier.<br>Wherever you go.</h1>
+  <p class="auth-description">Sign in to read, watch, and build. Keep your progress, field notes, and code together across your devices.</p>
+  <button id="google-sign-in" class="google-sign-in" disabled><svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M22.56 12.25c0-.73-.06-1.42-.19-2.09H12v3.96h5.92a5.05 5.05 0 0 1-2.2 3.32v2.76h3.57c2.09-1.93 3.27-4.77 3.27-7.95z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.8l-3.57-2.76c-.98.66-2.24 1.06-3.71 1.06-2.87 0-5.3-1.94-6.17-4.54H2.14v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.83 13.96a6.6 6.6 0 0 1 0-3.92V7.2H2.14a11 11 0 0 0 0 9.6z"/><path fill="#EA4335" d="M12 5.5c1.62 0 3.07.56 4.21 1.64l3.16-3.16A10.6 10.6 0 0 0 12 1a11 11 0 0 0-9.86 6.2l3.69 2.84C6.7 7.44 9.13 5.5 12 5.5z"/></svg><span>Continue with Google</span></button>
+  <p id="auth-status" class="auth-status" role="status">Preparing secure sign-in…</p>
+  <div class="auth-recovery"><button id="auth-retry" class="secondary" hidden>Retry</button><button id="auth-sign-out" class="ghost" hidden>Sign out</button></div>
+  <p class="auth-privacy">Your name and email are saved in Firebase to identify your account. Your learning records are private to your sign-in.</p>
+ </div>
+ <p class="auth-footnote">Strong foundations. Connected thinking. A place to practise.</p>
+</section>
+<div id="workspace-shell" hidden>
 <a class="skip-link" href="#main">Skip to content</a>
 <aside class="sidebar">
 <a href="#overview" class="brand" aria-label="Frontier home"><span class="brand-mark">f<span>↗</span></span><span>frontier<span class="brand-dot">.</span></span></a>
@@ -20,14 +35,16 @@
 <a href="#notebook" data-nav="notebook"><span aria-hidden="true">▧</span> My notebook</a>
 <a href="#progress" data-nav="progress"><span aria-hidden="true">◷</span> My progress</a>
 </nav>
-<div class="sidebar-bottom"><div class="little-card"><span class="spark">✳</span><strong>A little, every day.</strong><p>Read with intention.<br>Build to understand.</p><a href="#curriculum">Find your next lesson <span>↗</span></a></div><div class="profile"><span class="avatar">M</span><div><strong>My workspace</strong><small>Saved on this browser</small></div><span class="online" title="Browser-local storage"></span></div></div>
+<div class="sidebar-bottom"><div class="little-card"><span class="spark">✳</span><strong>A little, every day.</strong><p>Read with intention.<br>Build to understand.</p><a href="#curriculum">Find your next lesson <span>↗</span></a></div><div class="profile"><span class="avatar">M</span><div><strong>My workspace</strong><small>Connected to your account</small></div><span class="online" title="Browser-local storage"></span></div></div>
 </aside>
 <div class="app-shell">
-<header class="topbar"><span class="breadcrumb">Workspace <span>/</span> <strong id="breadcrumb">Overview</strong></span><form class="search-form" role="search"><span aria-hidden="true">⌕</span><input id="global-search" aria-label="Search all lessons" placeholder="Search a topic, skill, or idea…" autocomplete="off"><kbd>/</kbd></form><a class="top-play" href="#playground">&lt;/&gt; <span>Open playground</span> ↗</a></header>
+<header class="topbar"><span class="breadcrumb">Workspace <span>/</span> <strong id="breadcrumb">Overview</strong></span><form class="search-form" role="search"><span aria-hidden="true">⌕</span><input id="global-search" aria-label="Search all lessons" placeholder="Search a topic, skill, or idea…" autocomplete="off"><kbd>/</kbd></form><div class="account-actions"><span id="cloud-status" class="cloud-status" role="status">Connecting…</span><button id="cloud-retry" class="ghost" hidden>Retry sync</button><button id="sign-out" class="sign-out">Sign out</button></div><a class="top-play" href="#playground">&lt;/&gt; <span>Open playground</span> ↗</a></header>
+<section id="legacy-banner" class="legacy-banner" hidden><div><strong>Bring your earlier progress along.</strong><p>This browser has learning records saved before sign-in. Import them into this account if they belong to you.</p></div><button id="import-legacy" class="primary">Import my progress</button><button id="dismiss-legacy" class="ghost">Not now</button></section>
 <main id="main" tabindex="-1"><div class="loading"><span class="spark">✳</span><h1>Make room for what’s next.</h1><p>Loading your learning workspace…</p></div></main>
 <footer class="footer"><span>Built for curiosity. Designed for practice.</span><span>Read · Watch · Practise <span class="footer-dot">●</span> All in one place</span></footer>
 </div>
+</div>
 <div id="toast" role="status" aria-live="polite"></div>
-<dialog id="backup-dialog"><form method="dialog"><button class="close" aria-label="Close backup dialog">×</button></form><p class="eyebrow">YOUR WORK, YOURS TO KEEP</p><h2>Back up your workspace</h2><p>Progress, notes, and code are saved in this browser. Export a backup to move them to another device or keep them safe.</p><button id="export-data" class="primary">↓ Download backup</button><label class="upload-label" for="import-data">↑ Restore from a backup</label><input type="file" id="import-data" accept="application/json,.json"><p class="small muted">Restore merges matching lesson records. Records from the backup replace matching local records. Your backup never goes to a server.</p></dialog>
+<dialog id="backup-dialog"><form method="dialog"><button class="close" aria-label="Close backup dialog">×</button></form><p class="eyebrow">YOUR WORK, YOURS TO KEEP</p><h2>Back up your workspace</h2><p>Your workspace saves to your Firebase account. You can also download a private backup of your progress, notes, and code.</p><button id="export-data" class="primary">↓ Download backup</button><label class="upload-label" for="import-data">↑ Restore from a backup</label><input type="file" id="import-data" accept="application/json,.json"><p class="small muted">Restore merges matching lesson records. Records from the backup replace matching local records. Restored records save to your signed-in Firebase account.</p></dialog>
 <script type="module" src="./app.js"></script>
 </body></html>

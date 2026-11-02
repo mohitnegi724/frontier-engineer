@@ -12,3 +12,16 @@ Validated on 2 November 2026.
 - GitHub Pages workflow is included. Its deployment depends on Pages being enabled and the source repository being public for this account's current plan.
 
 Third-party playback and CDN availability can change independently of the application. Example exercise checks do not prove general correctness. Personal data stays in browser storage and is absent from the repository.
+
+## Firebase authentication and account sync update
+
+- 40 application tests pass, including interrupted saves, in-flight edits, recovery after refresh, account separation, remote updates, and opt-in legacy migration.
+- Seven Firebase emulator integration tests pass against the exact production rules: owner access succeeds; anonymous users, other accounts, forged identity fields, non-Google providers, invalid records, and unknown collections are denied.
+- Cloud Firestore uses the dedicated `frontier-engineer` project on the Spark plan, in Mumbai (`asia-south1`).
+- Google sign-in is enabled and the GitHub Pages hostname is authorized.
+- The sign-in screen hides the learning workspace until the authenticated account's cloud data loads.
+- Playground workers are isolated from Firebase Auth persistence by an opaque-origin iframe.
+- Real Google sign-in succeeds; Firebase console confirms the profile contains the signed-in name and email.
+- A temporary note was confirmed saved and restored after a fresh page load.
+- Sign-out removes the workspace; a direct playground route remains behind the sign-in screen.
+- The isolated JavaScript worker reports SecurityError when attempting IndexedDB access, while normal JavaScript and Python execution still work.

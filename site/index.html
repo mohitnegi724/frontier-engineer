@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Your personal engineering field guide. Read original lessons, watch expert lectures, practise code, and track your growth in one place.">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#173d32">
+<title>Frontier — Learn. Build. Go further.</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<aside class="sidebar">
+<a href="#overview" class="brand" aria-label="Frontier home"><span class="brand-mark">f<span>↗</span></span><span>frontier<span class="brand-dot">.</span></span></a>
+<div class="workspace-label">YOUR ENGINEERING WORKSPACE</div>
+<nav aria-label="Main navigation">
+<a href="#overview" data-nav="overview"><span aria-hidden="true">◫</span> Overview</a>
+<a href="#curriculum" data-nav="curriculum"><span aria-hidden="true">▤</span> Learning paths <span class="nav-count">24</span></a>
+<a href="#playground" data-nav="playground"><span aria-hidden="true">⌘</span> Playground</a>
+<a href="#notebook" data-nav="notebook"><span aria-hidden="true">▧</span> My notebook</a>
+<a href="#progress" data-nav="progress"><span aria-hidden="true">◷</span> My progress</a>
+</nav>
+<div class="sidebar-bottom"><div class="little-card"><span class="spark">✳</span><strong>A little, every day.</strong><p>Read with intention.<br>Build to understand.</p><a href="#curriculum">Find your next lesson <span>↗</span></a></div><div class="profile"><span class="avatar">M</span><div><strong>My workspace</strong><small>Saved on this browser</small></div><span class="online" title="Browser-local storage"></span></div></div>
+</aside>
+<div class="app-shell">
+<header class="topbar"><span class="breadcrumb">Workspace <span>/</span> <strong id="breadcrumb">Overview</strong></span><form class="search-form" role="search"><span aria-hidden="true">⌕</span><input id="global-search" aria-label="Search all lessons" placeholder="Search a topic, skill, or idea…" autocomplete="off"><kbd>/</kbd></form><a class="top-play" href="#playground">&lt;/&gt; <span>Open playground</span> ↗</a></header>
+<main id="main" tabindex="-1"><div class="loading"><span class="spark">✳</span><h1>Make room for what’s next.</h1><p>Loading your learning workspace…</p></div></main>
+<footer class="footer"><span>Built for curiosity. Designed for practice.</span><span>Read · Watch · Practise <span class="footer-dot">●</span> All in one place</span></footer>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+<dialog id="backup-dialog"><form method="dialog"><button class="close" aria-label="Close backup dialog">×</button></form><p class="eyebrow">YOUR WORK, YOURS TO KEEP</p><h2>Back up your workspace</h2><p>Progress, notes, and code are saved in this browser. Export a backup to move them to another device or keep them safe.</p><button id="export-data" class="primary">↓ Download backup</button><label class="upload-label" for="import-data">↑ Restore from a backup</label><input type="file" id="import-data" accept="application/json,.json"><p class="small muted">Restore merges matching lesson records. Records from the backup replace matching local records. Your backup never goes to a server.</p></dialog>
+<script type="module" src="./app.js"></script>
+</body></html>

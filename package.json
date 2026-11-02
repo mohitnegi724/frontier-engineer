@@ -1,0 +1,10 @@
+{
+  "name": "frontier-engineer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A browser-based learning workspace for DS & Algorithms, AI, and Frontend.",
+  "scripts": {"start": "node scripts/server.mjs", "test": "node --test", "check": "node --check site/app.js && node --check site/runner.js && node --check site/python-runner.js && node --test"},
+  "engines": {"node": ">=22"},
+  "license": "MIT"
+}

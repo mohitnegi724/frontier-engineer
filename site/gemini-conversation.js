@@ -31,7 +31,7 @@ export class GeminiConversation{
   const contents=[...this.messages.map(m=>({role:m.role,parts:[{text:m.prompt??m.text}]})),{role:'user',parts:[{text:prompt}]}];
   this.pending=true;
   try{
-   const answer=String(await this.generate(contents)).trim();
+   const generated=await this.generate(contents),answer=typeof generated==='string'?generated.trim():'';
    if(version!==this.version||!this.isAuthorized())return null;
    if(!answer)throw new Error('Gemini returned no text.');
    this.messages.push({role:'user',text:question,prompt},{role:'model',text:answer});

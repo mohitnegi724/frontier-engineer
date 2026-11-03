@@ -1,5 +1,5 @@
 import {firebaseConfig} from './firebase-config.js';
-import {geminiConfig} from './gemini-config.js';
+import {geminiConfig} from './gemini-config.js?v=gemini-2';
 import {TUTOR_INSTRUCTION} from './gemini-conversation.js';
 const SDK='https://www.gstatic.com/firebasejs/13.1.0/';
 let clientPromise;

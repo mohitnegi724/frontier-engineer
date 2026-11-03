@@ -46,3 +46,12 @@ test('quota, attestation, and network errors offer useful recovery without expos
  assert.match(geminiErrorMessage({message:'Failed to fetch'}),/connection/);
  assert.ok(!geminiErrorMessage({message:'private request payload'}).includes('private request payload'));
 });
+test('formatted replies keep explanation after a code fence and escape HTML in inline formatting',()=>{
+ const result=answerMarkup('Use **a norm** and `<img src=x>`.\n```js\nconst x = 1;\n```\nThen compare directions.');
+ assert.match(result,/<strong>a norm<\/strong>/);assert.match(result,/<code>&lt;img src=x&gt;<\/code>/);
+ assert.match(result,/<pre><code>const x = 1;/);assert.match(result,/Then compare directions\./);assert.ok(!result.includes('<img'));
+});
+test('missing or blank model output remains retryable and is never recorded as an answer',async()=>{
+ const chat=new GeminiConversation({isAuthorized:()=>true,generate:async()=>undefined});
+ await assert.rejects(chat.send('Explain'),/no text/);assert.deepEqual(chat.messages,[]);assert.equal(chat.pending,false);
+});

@@ -1,7 +1,12 @@
 import {GeminiConversation,selectionContext,geminiErrorMessage,MAX_QUESTION} from './gemini-conversation.js';
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // Keep model output inert: no generated links, HTML, scripts, or remote images.
-export function answerMarkup(text){return String(text).split(/```[^\n]*\n?|```/).map((part,i)=>i%2?`<pre><code>${escape(part)}</code></pre>`:`<div class="gemini-prose">${escape(part)}</div>`).join('');}
+export function answerMarkup(text){
+ const prose=value=>`<div class="gemini-prose">${escape(value).replace(/`([^`\n]+)`/g,'<code>$1</code>').replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>')}</div>`;
+ const source=String(text),fence=/```[^\n]*\n([\s\S]*?)```/g;let result='',offset=0,match;
+ while((match=fence.exec(source))){result+=prose(source.slice(offset,match.index))+`<pre><code>${escape(match[1])}</code></pre>`;offset=fence.lastIndex;}
+ return result+prose(source.slice(offset));
+}
 
 export function mountGemini({enabled=true,generate,isAuthorized,getLesson}){
  if(!enabled){document.querySelector('#gemini-launcher').hidden=true;return {clear(){},routeChanged(){}};}

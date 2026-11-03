@@ -1,10 +1,10 @@
 import {STORAGE_KEY,emptyState,normalizeState,getStats,localDate} from './state.js';
 import {CloudWorkspace,mergeLegacyState} from './cloud-sync.js';
-import {getFirebaseClient,authErrorMessage} from './firebase-client.js?v=gemini-1';
+import {getFirebaseClient,authErrorMessage} from './firebase-client.js?v=gemini-2';
 import {IsolatedRunner} from './isolated-runner.js';
 import {prepareCurriculum,videoEmbedUrl,formatTimestamp,lessonVideo} from './curriculum.js?v=watch-4';
-import {mountGemini} from './gemini.js?v=gemini-1';
-import {geminiConfig} from './gemini-config.js';
+import {mountGemini} from './gemini.js?v=gemini-2';
+import {geminiConfig} from './gemini-config.js?v=gemini-2';
 const $=s=>document.querySelector(s);
 const selectedVideos=new Map();
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

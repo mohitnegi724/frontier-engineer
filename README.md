@@ -33,7 +33,7 @@ Open http://127.0.0.1:4173 in your browser. To choose another port, set `PORT` b
 npm run check
 ```
 
-This checks JavaScript syntax and runs 56 tests covering the curriculum, reference solutions, progress, account isolation, cloud synchronization, backups, migration, video selection, Gemini conversation isolation, and code execution. `npm ci` installs tools for the additional seven Firestore authorization tests; run `npm run test:rules` with Java 21 or later installed. These tests use an isolated demo project, never production data.
+This checks JavaScript syntax and runs 58 tests covering the curriculum, reference solutions, progress, account isolation, cloud synchronization, backups, migration, video selection, Gemini conversation isolation, and code execution. `npm ci` installs tools for the additional seven Firestore authorization tests; run `npm run test:rules` with Java 21 or later installed. These tests use an isolated demo project, never production data.
 
 ## Publish on GitHub Pages
 
@@ -137,10 +137,10 @@ App code and original reading/exercises are under the MIT license. Linked refere
 
 The same stable lesson object supplies all three activity tabs. A video title may differ from the lesson title, but its connection to the objective and any exercise-contract differences are shown explicitly. Sources were reviewed on 2 November 2026; publisher-controlled availability and content can change later.
 
-## Gemini tutor setup (prepared, not enabled)
+## In-page Gemini tutor
 
-The selected-text tutor is implemented behind `geminiConfig.enabled=false` until the project owner approves the Gemini API terms and Firebase AI Logic/App Check setup is completed. The normal workspace works without Gemini.
+The selected-text tutor uses Firebase AI Logic and the Gemini Developer API on the existing Spark project. The owner approved the required Gemini and Google Cloud Platform terms. App Check uses a production reCAPTCHA Enterprise score-based key restricted to `mohitnegi724.github.io`; AI Logic enforcement remains enabled.
 
-To enable it, complete Firebase AI Logic setup with the Gemini Developer API on the existing Spark project, register the web app with App Check, and place the **public attestation site key** and provider in `site/gemini-config.js`. Keep App Check enforced for AI Logic. Never put the Gemini Developer API secret in this repository. Set `enabled:true` only after verifying a real response on the deployed hostname. Changing plans or adding billing requires separate owner authorization.
+`site/gemini-config.js` contains the model name and **public attestation site key**, never a Gemini Developer API secret. Keep App Check enforced for AI Logic. No billing account was added and no plan was upgraded; free-tier quotas apply. Optional AI monitoring was left off. Changing plans or adding billing requires separate owner authorization.
 
-When enabled, selecting a passage opens the in-page tutor with the excerpt attached. Nothing is submitted until Send. Questions and answers retain context within that tab; New chat, sign-out, and reload clear the conversation. Chats are not stored with learning progress. Only the excerpt, lesson title, and chat are provided as model context; notes, account identity, and the rest of the workspace are not added to prompts. Browser attestation uses reCAPTCHA.
+Selecting a passage opens the in-page tutor with the excerpt attached. Nothing is submitted until Send. Questions and answers retain context within that tab; New chat, sign-out, and reload clear the conversation. Chats are not stored with learning progress. Only the excerpt, lesson title, and chat are provided as model context; notes, account identity, and the rest of the workspace are not added to prompts. Browser attestation uses reCAPTCHA.

@@ -54,7 +54,7 @@ export function mountGemini({enabled=true,generate,isAuthorized,getLesson}){
   status.textContent='';const version=chat.version;
   const pending=chat.send(question);paint();
   try{const answer=await pending;if(answer===null)return;composer.value='';status.textContent='Gemini replied. You can ask a follow-up.';}
-  catch(error){if(version!==chat.version)return;status.textContent=/Sign in|Start a new chat|Keep your question/.test(error.message)?error.message:geminiErrorMessage(error);}
+  catch(error){if(version!==chat.version)return;console.warn('Frontier Gemini diagnostic',error.code||error.name,String(error.message).replace(/https?:\/\/\S+/g,'[service URL]').slice(0,500));status.textContent=/Sign in|Start a new chat|Keep your question/.test(error.message)?error.message:geminiErrorMessage(error);}
   finally{if(version===chat.version&&isAuthorized()){paint();if(opened)composer.focus();}}
  };
  composer.maxLength=MAX_QUESTION;

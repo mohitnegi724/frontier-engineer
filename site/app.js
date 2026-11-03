@@ -3,7 +3,7 @@ import {CloudWorkspace,mergeLegacyState} from './cloud-sync.js';
 import {getFirebaseClient,authErrorMessage} from './firebase-client.js?v=gemini-2';
 import {IsolatedRunner} from './isolated-runner.js';
 import {prepareCurriculum,videoEmbedUrl,formatTimestamp,lessonVideo} from './curriculum.js?v=watch-4';
-import {mountGemini} from './gemini.js?v=gemini-2';
+import {mountGemini} from './gemini.js?v=gemini-3';
 import {geminiConfig} from './gemini-config.js?v=gemini-2';
 const $=s=>document.querySelector(s);
 const selectedVideos=new Map();

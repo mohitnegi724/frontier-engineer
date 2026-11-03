@@ -1,16 +1,13 @@
 import {STORAGE_KEY,emptyState,normalizeState,getStats,localDate} from './state.js';
 import {CloudWorkspace,mergeLegacyState} from './cloud-sync.js';
-import {getFirebaseClient,authErrorMessage} from './firebase-client.js?v=gemini-5';
+import {getFirebaseClient,authErrorMessage} from './firebase-client.js?v=watch-6';
 import {IsolatedRunner} from './isolated-runner.js';
 import {prepareCurriculum,videoEmbedUrl,formatTimestamp,lessonVideo} from './curriculum.js?v=watch-4';
-import {mountGemini} from './gemini.js?v=gemini-3';
-import {geminiConfig} from './gemini-config.js?v=gemini-2';
 const $=s=>document.querySelector(s);
 const selectedVideos=new Map();
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let lessons=[],state=emptyState(),storageAvailable=true,worker=null,runTimer=null,toastTimer,libraryTrack='all',libraryLevel='all',libraryStatus='all',search='',playLanguage='javascript',playExercise='free',lastDraftKey=null;
 let signedInUser=null,accountStore=null,authClient=null,sessionGeneration=0,workspaceLoaded=false,cloudMessage='Connecting…';
-const gemini=mountGemini({enabled:geminiConfig.enabled,generate:contents=>authClient.askGemini(contents),isAuthorized:()=>!!(signedInUser&&workspaceLoaded),getLesson:()=>document.querySelector('#main h1')?.textContent||'Learning workspace'});
 const tracks={dsa:{title:'DS & Algorithms',icon:'{ }',description:'Build the problem-solving foundations that make every system better.',range:'From linear scans to coin-change DP',color:'dsa'},ai:{title:'Artificial Intelligence',icon:'✳',description:'Understand the math. Build the models. Engineer reliable AI systems.',range:'From vectors to reliable AI systems',color:'ai'},frontend:{title:'Frontend Engineering',icon:'⌘',description:'Craft thoughtful, accessible interfaces. Build for the real world.',range:'From semantic HTML to architecture',color:'frontend'}};
 const capstones=[{id:'search',title:'Build a search engine',icon:'⌕',description:'Create an inverted index, rank a local document collection, and use a priority queue for top-k results. Compare lookup and ranking costs. Add tests for empty queries and duplicates.',check:'I built it, tested edge cases, and explained the complexity.',track:'dsa'}, {id:'retrieval',title:'Build a retrieval evaluation lab',icon:'✳',description:'Chunk a small knowledge base, implement lexical and vector ranking, then evaluate recall@k on at least 20 held-out questions. Record failures and keep source IDs with results.',check:'I compared two baselines and documented failures.',track:'ai'}, {id:'workspace',title:'Ship an accessible workspace',icon:'⌘',description:'Build a searchable learning dashboard in the HTML/CSS playground. Support keyboard navigation, narrow screens, loading and empty states. Audit persistence, contrast, and long labels.',check:'I tested it with a keyboard and on a narrow screen.',track:'frontend'}];
 const starters={javascript:'// Make an idea concrete. Your code runs right here.\nconst skills = ["Understand", "Build", "Evaluate"];\nskills.forEach((skill, i) => console.log(`${i + 1}. ${skill}`));\n',python:'# Python runs in your browser using Pyodide.\n# The first run downloads the runtime; no API key is needed.\nimport math\n\na, b = [1, 2, 3], [3, 2, 1]\ndot = sum(x * y for x, y in zip(a, b))\nsimilarity = dot / math.sqrt(sum(x*x for x in a) * sum(x*x for x in b))\nprint("Cosine similarity:", round(similarity, 4))\n',html:'<!doctype html>\n<html lang="en">\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1">\n<style>\n  body { font: 16px system-ui; background: #f4f7ed; padding: 32px; color: #173d32; }\n  .card { max-width: 400px; padding: 28px; border-radius: 20px; background: white; border: 1px solid #dce5cf; }\n  h1 { font-size: 28px; }\n  button { background: #173d32; color: white; padding: 12px 18px; border: 0; border-radius: 8px; cursor: pointer; }\n  button:focus-visible { outline: 3px solid #84a95f; outline-offset: 4px; }\n</style>\n<main class="card">\n  <p>YOUR NEXT CHAPTER</p>\n  <h1>Build something that matters.</h1>\n  <p>Small experiments. Better understanding.</p>\n  <button id="start">Start building →</button>\n  <p id="message" role="status"></p>\n</main>\n<script>\n  document.getElementById("start").onclick = () => {\n    document.getElementById("message").textContent = "One step closer.";\n  };\n</script>\n</html>'};
@@ -87,14 +84,14 @@ $('#global-search').form.addEventListener('submit',event=>{event.preventDefault(
 $('#export-data').onclick=()=>{const blob=new Blob([JSON.stringify({...state,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`frontier-backup-${localDate()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Workspace backup downloaded.');};
 $('#import-data').onchange=async event=>{const file=event.target.files[0];if(!file)return;try{if(file.size>5000000)throw new Error('Backup is too large (maximum 5 MB).');const imported=normalizeState(JSON.parse(await file.text()),lessons.map(l=>l.id));state={...state,lessons:{...state.lessons,...imported.lessons},drafts:{...state.drafts,...imported.drafts},activity:{...state.activity,...imported.activity},capstones:{...state.capstones,...imported.capstones},lastLesson:imported.lastLesson||state.lastLesson};save();$('#backup-dialog').close();render(false);toast(storageAvailable?'Backup restored. Your workspace is ready.':'Backup restored in memory. Download a backup before leaving.');}catch(error){toast('Could not restore: '+error.message);}event.target.value='';};
 $('.skip-link').addEventListener('click',event=>{event.preventDefault();$('#main').focus();});
-window.addEventListener('hashchange',()=>{gemini.routeChanged();render();});
+window.addEventListener('hashchange',()=>render());
 function setGate(message,{google=false,retry=false,signOut=false}={}){
  $('#workspace-shell').hidden=true;$('#auth-gate').hidden=false;$('#auth-status').textContent=message;
  $('#google-sign-in').hidden=!google;$('#google-sign-in').disabled=!google||!authClient;$('#auth-retry').hidden=!retry;$('#auth-sign-out').hidden=!signOut;
  document.title='Sign in · Frontier';
 }
 function clearWorkspace(){
- gemini.clear();selectedVideos.clear();
+ selectedVideos.clear();
  workspaceLoaded=false;stopRun();accountStore?.close();accountStore=null;state=emptyState();signedInUser=null;
  $('#backup-dialog').close();$('#main').replaceChildren();$('#legacy-banner').hidden=true;
  $('.profile strong').textContent='My workspace';$('.profile small').textContent='Sign in to continue';$('.avatar').textContent='F';

@@ -33,7 +33,7 @@ Open http://127.0.0.1:4173 in your browser. To choose another port, set `PORT` b
 npm run check
 ```
 
-This checks JavaScript syntax and runs 58 tests covering the curriculum, reference solutions, progress, account isolation, cloud synchronization, backups, migration, video selection, Gemini conversation isolation, and code execution. `npm ci` installs tools for the additional seven Firestore authorization tests; run `npm run test:rules` with Java 21 or later installed. These tests use an isolated demo project, never production data.
+This checks JavaScript syntax and runs 48 tests covering the curriculum, reference solutions, progress, account isolation, cloud synchronization, backups, migration, video selection, and code execution. `npm ci` installs tools for the additional seven Firestore authorization tests; run `npm run test:rules` with Java 21 or later installed. These tests use an isolated demo project, never production data.
 
 ## Publish on GitHub Pages
 
@@ -136,11 +136,3 @@ App code and original reading/exercises are under the MIT license. Linked refere
 [CURRICULUM_AUDIT.md](CURRICULUM_AUDIT.md) maps each numbered lesson to its shared objective, focused video, exercise, and prerequisites. Paths progress from Foundation through Core to Advanced. For example, AI introduces neurons before gradient descent and classifier metrics before retrieval evaluation. Frontend introduces immutable array transformations and pure logic before async state updates and React filtering. Prerequisites are recommended preparation, not access locks. All paths assume basic programming syntax; the JavaScript playground is used for the guided checks.
 
 The same stable lesson object supplies all three activity tabs. A video title may differ from the lesson title, but its connection to the objective and any exercise-contract differences are shown explicitly. Sources were reviewed on 2 November 2026; publisher-controlled availability and content can change later.
-
-## In-page Gemini tutor
-
-The selected-text tutor uses Firebase AI Logic and the Gemini Developer API on the existing Spark project. The owner approved the required Gemini and Google Cloud Platform terms. App Check uses a production reCAPTCHA Enterprise score-based key restricted to `mohitnegi724.github.io`; AI Logic enforcement remains enabled.
-
-`site/gemini-config.js` contains the model name and **public attestation site key**, never a Gemini Developer API secret. Keep App Check enforced for AI Logic. No billing account was added and no plan was upgraded; free-tier quotas apply. Optional AI monitoring was left off. Changing plans or adding billing requires separate owner authorization.
-
-Selecting a passage opens the in-page tutor with the excerpt attached. Nothing is submitted until Send. Questions and answers retain context within that tab; New chat, sign-out, and reload clear the conversation. Chats are not stored with learning progress. Only the excerpt, lesson title, and chat are provided as model context; notes, account identity, and the rest of the workspace are not added to prompts. Browser attestation uses reCAPTCHA.

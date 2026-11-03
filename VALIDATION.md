@@ -41,5 +41,9 @@ Third-party playback and CDN availability can change independently of the applic
 - Titles, publishers, and embedding availability checked with YouTube oEmbed for all videos. Popularity and topic fit assessed from creator descriptions and visible YouTube results; no permanent view-count ranking is claimed.
 - Preserved the StatQuest cosine similarity video as the first choice and added codebasics alongside it.
 - Video controls switch only the Watch pane, replace the old player, and retain lesson notes and completion. Every choice includes its connection to the challenge.
-- All 56 application tests pass, including video counts, alignment of every video, stale video IDs, duplicate/source rejection, and Gemini request/history isolation. The unchanged seven Firestore security tests also run in deployment CI.
-- Gemini UI and Firebase AI Logic integration are prepared but disabled until the owner approves required service terms and App Check setup is complete. No Gemini response has been verified yet.
+- All 48 application tests pass, including video counts, alignment of every video, stale video IDs, duplicate/source rejection. The unchanged seven Firestore security tests also run in deployment CI.
+
+## Gemini discarded — 3 November 2026
+
+- Removed the chat interface, selected-text listeners, Gemini configuration, AI SDK integration, browser attestation integration, and feature-specific tests.
+- Google sign-in, private Firestore progress, lesson notes, playground drafts, and all 49 videos are retained.

@@ -1,7 +1,4 @@
 import {firebaseConfig} from './firebase-config.js';
-import {geminiConfig} from './gemini-config.js?v=gemini-2';
-import {TUTOR_INSTRUCTION} from './gemini-conversation.js';
-import {enterpriseTokenProvider} from './app-attestation.js?v=gemini-5';
 const SDK='https://www.gstatic.com/firebasejs/13.1.0/';
 let clientPromise;
 export function firebaseReady(){return !!(firebaseConfig?.apiKey&&firebaseConfig?.projectId&&firebaseConfig?.authDomain);}
@@ -10,29 +7,12 @@ export function getFirebaseClient(){
  return clientPromise??=(async()=>{
   const [appSDK,authSDK,dbSDK]=await Promise.all([import(SDK+'firebase-app.js'),import(SDK+'firebase-auth.js'),import(SDK+'firebase-firestore.js')]);
   const app=appSDK.initializeApp(firebaseConfig),auth=authSDK.getAuth(app),db=dbSDK.getFirestore(app),provider=new authSDK.GoogleAuthProvider();
-  let tutorPromise,appCheck;
   provider.setCustomParameters({prompt:'select_account'});
   return {
    currentUser:()=>auth.currentUser,
    observe:(next,error)=>authSDK.onAuthStateChanged(auth,next,error),
    signIn:()=>authSDK.signInWithPopup(auth,provider),
    signOut:()=>authSDK.signOut(auth),
-   async askGemini(contents){
-    const uid=auth.currentUser?.uid;
-    if(!uid)throw new Error('Sign in to ask Gemini.');
-    const tutor=await (tutorPromise??=(async()=>{
-     if(!geminiConfig.appCheckSiteKey)throw new Error('Gemini App Check setup is incomplete.');
-     const [checkSDK,aiSDK]=await Promise.all([import(SDK+'firebase-app-check.js'),import(SDK+'firebase-ai.js')]);
-     const attestationProvider=geminiConfig.appCheckProvider==='enterprise'?new checkSDK.CustomProvider({getToken:enterpriseTokenProvider(firebaseConfig,geminiConfig.appCheckSiteKey)}):new checkSDK.ReCaptchaV3Provider(geminiConfig.appCheckSiteKey);
-     appCheck??=checkSDK.initializeAppCheck(app,{provider:attestationProvider,isTokenAutoRefreshEnabled:true});
-     const ai=aiSDK.getAI(app,{backend:new aiSDK.GoogleAIBackend()});
-     return {model:aiSDK.getGenerativeModel(ai,{model:geminiConfig.model,systemInstruction:TUTOR_INSTRUCTION,generationConfig:{maxOutputTokens:2048,temperature:0.4}},{timeout:45000}),verify:()=>checkSDK.getToken(appCheck)};
-    })().catch(error=>{tutorPromise=null;throw error;}));
-    await tutor.verify();
-    if(auth.currentUser?.uid!==uid)throw new Error('Sign in to ask Gemini.');
-    const result=await tutor.model.generateContent({contents});
-    return result.response.text();
-   },
    async saveProfile(user){
     if(!user.email)throw new Error('Google did not provide an email address. Choose another account.');
     const ref=dbSDK.doc(db,'users',user.uid),old=await dbSDK.getDoc(ref);

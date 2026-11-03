@@ -19,16 +19,17 @@ export function getFirebaseClient(){
    async askGemini(contents){
     const uid=auth.currentUser?.uid;
     if(!uid)throw new Error('Sign in to ask Gemini.');
-    const model=await (tutorPromise??=(async()=>{
+    const tutor=await (tutorPromise??=(async()=>{
      if(!geminiConfig.appCheckSiteKey)throw new Error('Gemini App Check setup is incomplete.');
      const [checkSDK,aiSDK]=await Promise.all([import(SDK+'firebase-app-check.js'),import(SDK+'firebase-ai.js')]);
      const Provider=geminiConfig.appCheckProvider==='enterprise'?checkSDK.ReCaptchaEnterpriseProvider:checkSDK.ReCaptchaV3Provider;
      appCheck??=checkSDK.initializeAppCheck(app,{provider:new Provider(geminiConfig.appCheckSiteKey),isTokenAutoRefreshEnabled:true});
      const ai=aiSDK.getAI(app,{backend:new aiSDK.GoogleAIBackend()});
-     return aiSDK.getGenerativeModel(ai,{model:geminiConfig.model,systemInstruction:TUTOR_INSTRUCTION,generationConfig:{maxOutputTokens:2048,temperature:0.4}},{timeout:45000});
+     return {model:aiSDK.getGenerativeModel(ai,{model:geminiConfig.model,systemInstruction:TUTOR_INSTRUCTION,generationConfig:{maxOutputTokens:2048,temperature:0.4}},{timeout:45000}),verify:()=>checkSDK.getToken(appCheck)};
     })().catch(error=>{tutorPromise=null;throw error;}));
+    await tutor.verify();
     if(auth.currentUser?.uid!==uid)throw new Error('Sign in to ask Gemini.');
-    const result=await model.generateContent({contents});
+    const result=await tutor.model.generateContent({contents});
     return result.response.text();
    },
    async saveProfile(user){

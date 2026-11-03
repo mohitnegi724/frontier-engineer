@@ -1,6 +1,6 @@
 import {STORAGE_KEY,emptyState,normalizeState,getStats,localDate} from './state.js';
 import {CloudWorkspace,mergeLegacyState} from './cloud-sync.js';
-import {getFirebaseClient,authErrorMessage} from './firebase-client.js?v=gemini-4';
+import {getFirebaseClient,authErrorMessage} from './firebase-client.js?v=gemini-5';
 import {IsolatedRunner} from './isolated-runner.js';
 import {prepareCurriculum,videoEmbedUrl,formatTimestamp,lessonVideo} from './curriculum.js?v=watch-4';
 import {mountGemini} from './gemini.js?v=gemini-3';

@@ -65,15 +65,6 @@
       }
     ],
     "solution": "function maxValue(nums) {\n  if (!nums.length) return null;\n  let best = nums[0];\n  for (const n of nums) if (n > best) best = n;\n  return best;\n}",
-    "video": {
-      "id": "ZA-tUyM_y7s",
-      "title": "1. Algorithms and Computation",
-      "creator": "MIT OpenCourseWare",
-      "sourceUrl": "https://www.youtube.com/watch?v=ZA-tUyM_y7s",
-      "topicId": "complexity",
-      "note": "Watch the discussion of correctness and running time, then apply both ideas to the maximum scan. The exercise is a small linear-time example of the same analysis.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
     "tags": [
       "Big O",
@@ -92,7 +83,29 @@
       "practise": "complexity"
     },
     "practiceGoal": "Use a loop invariant to justify a one-pass maximum search and explain its time and space cost.",
-    "order": 1
+    "order": 1,
+    "videos": [
+      {
+        "id": "D6xkbGLQesk",
+        "title": "Introduction to Big O Notation and Time Complexity (Data Structures & Algorithms #7)",
+        "creator": "CS Dojo",
+        "sourceUrl": "https://www.youtube.com/watch?v=D6xkbGLQesk",
+        "topicId": "complexity",
+        "note": "Build intuition for how loop counts grow with input size. Connect the linear-time example to the maximum scan in this lesson.",
+        "reviewedAt": "2026-11-03",
+        "label": "Start here"
+      },
+      {
+        "id": "itn09C2ZB9Y",
+        "title": "Learn Big O Notation In 12 Minutes",
+        "creator": "Web Dev Simplified",
+        "sourceUrl": "https://www.youtube.com/watch?v=itn09C2ZB9Y",
+        "topicId": "complexity",
+        "note": "Use small JavaScript examples to estimate time and space complexity. Apply the same counting to your one-pass maximum function.",
+        "reviewedAt": "2026-11-03",
+        "label": "Another explanation"
+      }
+    ]
   },
   {
     "id": "hashing",
@@ -148,15 +161,6 @@
       }
     ],
     "solution": "function firstUnique(text) {\n const counts=new Map();\n for(const c of text) counts.set(c,(counts.get(c)||0)+1);\n for(const c of text) if(counts.get(c)===1) return c;\n return null;\n}",
-    "video": {
-      "id": "rBENYgWy3xU",
-      "title": "First Unique Character in a String - Leetcode 387 - Python",
-      "creator": "NeetCodeIO",
-      "sourceUrl": "https://www.youtube.com/watch?v=rBENYgWy3xU",
-      "topicId": "hashing",
-      "note": "Follow the character-frequency map and the second pass in original order. The video returns an index; our exercise returns the character itself, or null when none exists.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://neetcode.io/solutions/first-unique-character-in-a-string",
     "tags": [
       "Map",
@@ -177,7 +181,29 @@
       "practise": "hashing"
     },
     "practiceGoal": "Count character frequencies with a map, then find the first character whose count is one.",
-    "order": 2
+    "order": 2,
+    "videos": [
+      {
+        "id": "rBENYgWy3xU",
+        "title": "First Unique Character in a String - Leetcode 387 - Python",
+        "creator": "NeetCodeIO",
+        "sourceUrl": "https://www.youtube.com/watch?v=rBENYgWy3xU",
+        "topicId": "hashing",
+        "note": "Follow the character-frequency map and the second pass in original order. The video returns an index; our exercise returns the character itself, or null when none exists.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "5co5Gvp_-S0",
+        "title": "Amazon Coding Interview Question - firstNonRepeatingCharacter",
+        "creator": "Nick White",
+        "sourceUrl": "https://www.youtube.com/watch?v=5co5Gvp_-S0",
+        "topicId": "hashing",
+        "note": "Trace a frequency map to locate the first non-repeating character. The explanation uses Java; the counting and ordering ideas transfer directly to our JavaScript challenge.",
+        "reviewedAt": "2026-11-03",
+        "label": "Worked example"
+      }
+    ]
   },
   {
     "id": "stacks",
@@ -233,15 +259,6 @@
       }
     ],
     "solution": "function balanced(text) {\n const stack=[], pairs={\")\":\"(\",\"]\":\"[\",\"}\":\"{\"};\n for(const c of text) {\n  if(\"([{ \".trim().includes(c)) stack.push(c);\n  else if(c in pairs && stack.pop()!==pairs[c]) return false;\n }\n return stack.length===0;\n}",
-    "video": {
-      "id": "WTzjTskDFMg",
-      "title": "Valid Parentheses - Stack - Leetcode 20 - Python",
-      "creator": "NeetCode",
-      "sourceUrl": "https://www.youtube.com/watch?v=WTzjTskDFMg",
-      "topicId": "stacks",
-      "note": "Trace each push and pop in the bracket validator. Our exercise uses the same stack invariant, and additionally ignores ordinary non-bracket text.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://neetcode.io/solutions/valid-parentheses",
     "tags": [
       "Stack",
@@ -262,7 +279,29 @@
       "practise": "stacks"
     },
     "practiceGoal": "Use a last-in, first-out stack to validate matching and correctly nested brackets.",
-    "order": 3
+    "order": 3,
+    "videos": [
+      {
+        "id": "WTzjTskDFMg",
+        "title": "Valid Parentheses - Stack - Leetcode 20 - Python",
+        "creator": "NeetCode",
+        "sourceUrl": "https://www.youtube.com/watch?v=WTzjTskDFMg",
+        "topicId": "stacks",
+        "note": "Trace each push and pop in the bracket validator. Our exercise uses the same stack invariant, and additionally ignores ordinary non-bracket text.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "7-_V-ufnF4c",
+        "title": "Valid Parentheses - Leetcode 20 - Stacks (Python)",
+        "creator": "Greg Hogg",
+        "sourceUrl": "https://www.youtube.com/watch?v=7-_V-ufnF4c",
+        "topicId": "stacks",
+        "note": "Trace nested brackets and the stack of unmatched opening symbols. Use the same last-in, first-out rule here; our challenge also ignores ordinary text.",
+        "reviewedAt": "2026-11-03",
+        "label": "Another explanation"
+      }
+    ]
   },
   {
     "id": "arrays",
@@ -346,15 +385,6 @@
       }
     ],
     "solution": "function pairSum(sorted, target) {\n let l=0,r=sorted.length-1;\n while(l<r) { const s=sorted[l]+sorted[r];\n  if(s===target) return [l,r];\n  if(s<target) l++; else r--;\n }\n return null;\n}",
-    "video": {
-      "id": "cQ1Oz4ckceM",
-      "title": "TWO SUM II - Amazon Coding Interview Question - Leetcode 167 - Python",
-      "creator": "NeetCode",
-      "sourceUrl": "https://www.youtube.com/watch?v=cQ1Oz4ckceM",
-      "topicId": "arrays",
-      "note": "Follow the same end-to-end two-pointer strategy. The video problem uses one-based indices; our playground uses zero-based indices and returns null when no pair exists.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://neetcode.io/solutions/two-sum-ii-input-array-is-sorted",
     "tags": [
       "Two pointers",
@@ -375,7 +405,29 @@
       "practise": "arrays"
     },
     "practiceGoal": "Use sorted order to move two pointers safely while searching for a target pair sum.",
-    "order": 4
+    "order": 4,
+    "videos": [
+      {
+        "id": "cQ1Oz4ckceM",
+        "title": "TWO SUM II - Amazon Coding Interview Question - Leetcode 167 - Python",
+        "creator": "NeetCode",
+        "sourceUrl": "https://www.youtube.com/watch?v=cQ1Oz4ckceM",
+        "topicId": "arrays",
+        "note": "Follow the same end-to-end two-pointer strategy. The video problem uses one-based indices; our playground uses zero-based indices and returns null when no pair exists.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "sAQT4ZrUfWo",
+        "title": "LeetCode Two Sum II Solution Explained - Java",
+        "creator": "Nick White",
+        "sourceUrl": "https://www.youtube.com/watch?v=sAQT4ZrUfWo",
+        "topicId": "arrays",
+        "note": "Walk through the same sorted two-sum problem with left and right pointers. The Java solution returns one-based positions; our challenge returns zero-based indices or null.",
+        "reviewedAt": "2026-11-03",
+        "label": "Worked example"
+      }
+    ]
   },
   {
     "id": "binary-search",
@@ -446,15 +498,6 @@
       }
     ],
     "solution": "function lowerBound(nums,target) {\n let lo=0,hi=nums.length;\n while(lo<hi) {\n  const mid=lo+Math.floor((hi-lo)/2);\n  if(nums[mid]<target) lo=mid+1; else hi=mid;\n }\n return lo;\n}",
-    "video": {
-      "id": "K-RYzDZkzCI",
-      "title": "Search Insert Position - Binary Search - Leetcode 35 - Python",
-      "creator": "NeetCode",
-      "sourceUrl": "https://www.youtube.com/watch?v=K-RYzDZkzCI",
-      "topicId": "binary-search",
-      "note": "Search Insert Position finds the insertion boundary. Our lowerBound challenge applies that boundary search to duplicate values too, returning the leftmost valid position.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://neetcode.io/solutions/search-insert-position",
     "tags": [
       "Boundaries",
@@ -475,7 +518,29 @@
       "practise": "binary-search"
     },
     "practiceGoal": "Maintain a half-open interval to find the first value at least as large as a target.",
-    "order": 5
+    "order": 5,
+    "videos": [
+      {
+        "id": "K-RYzDZkzCI",
+        "title": "Search Insert Position - Binary Search - Leetcode 35 - Python",
+        "creator": "NeetCode",
+        "sourceUrl": "https://www.youtube.com/watch?v=K-RYzDZkzCI",
+        "topicId": "binary-search",
+        "note": "Search Insert Position finds the insertion boundary. Our lowerBound challenge applies that boundary search to duplicate values too, returning the leftmost valid position.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "6zhGS79oQ4k",
+        "title": "BS-2. Implement Lower Bound and Upper Bound | Search Insert Position | Floor and Ceil",
+        "creator": "take U forward",
+        "sourceUrl": "https://www.youtube.com/watch?v=6zhGS79oQ4k",
+        "topicId": "binary-search",
+        "note": "Understand lower bound before comparing it with upper bound and insertion position. The lower-bound portion is the exact first-value-at-least-target contract used in this challenge.",
+        "reviewedAt": "2026-11-03",
+        "label": "Go deeper"
+      }
+    ]
   },
   {
     "id": "trees",
@@ -549,15 +614,6 @@
       }
     ],
     "solution": "function treeDepth(root) {\n return root ? 1+Math.max(treeDepth(root.left),treeDepth(root.right)) : 0;\n}",
-    "video": {
-      "id": "hTM3phVI6YQ",
-      "title": "Maximum Depth of Binary Tree - 3 Solutions - Leetcode 104 - Python",
-      "creator": "NeetCode",
-      "sourceUrl": "https://www.youtube.com/watch?v=hTM3phVI6YQ",
-      "topicId": "trees",
-      "note": "Compare the recursive and iterative depth calculations. Our exercise uses the same node-depth convention: an empty tree has depth zero and a leaf has depth one.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://neetcode.io/solutions/maximum-depth-of-binary-tree",
     "tags": [
       "Recursion",
@@ -578,7 +634,29 @@
       "practise": "trees"
     },
     "practiceGoal": "Define a recursive subtree contract and compute a binary tree’s maximum depth.",
-    "order": 6
+    "order": 6,
+    "videos": [
+      {
+        "id": "hTM3phVI6YQ",
+        "title": "Maximum Depth of Binary Tree - 3 Solutions - Leetcode 104 - Python",
+        "creator": "NeetCode",
+        "sourceUrl": "https://www.youtube.com/watch?v=hTM3phVI6YQ",
+        "topicId": "trees",
+        "note": "Compare the recursive and iterative depth calculations. Our exercise uses the same node-depth convention: an empty tree has depth zero and a leaf has depth one.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "MARxXuqnVGw",
+        "title": "LeetCode Maximum Depth of a Binary Tree Solution Explained - Java",
+        "creator": "Nick White",
+        "sourceUrl": "https://www.youtube.com/watch?v=MARxXuqnVGw",
+        "topicId": "trees",
+        "note": "Work through the maximum-depth recursion in Java. An empty subtree contributes zero; each node adds one to the larger child depth, just as in our JavaScript exercise.",
+        "reviewedAt": "2026-11-03",
+        "label": "Another explanation"
+      }
+    ]
   },
   {
     "id": "graphs",
@@ -668,15 +746,6 @@
       }
     ],
     "solution": "function distance(graph,start,end) {\n const q=[[start,0]], seen=new Set([start]);\n for(let h=0;h<q.length;h++) {\n  const [v,d]=q[h]; if(v===end) return d;\n  for(const n of graph[v]||[]) if(!seen.has(n)) {seen.add(n);q.push([n,d+1]);}\n }\n return -1;\n}",
-    "video": {
-      "id": "oFVYVzlvk9c",
-      "title": "9. Breadth-First Search",
-      "creator": "MIT OpenCourseWare",
-      "sourceUrl": "https://www.youtube.com/watch?v=oFVYVzlvk9c",
-      "topicId": "graphs",
-      "note": "Follow the BFS frontier and distance layers. Implement that same traversal to return the number of edges between two named vertices.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
     "tags": [
       "BFS",
@@ -699,7 +768,29 @@
       "practise": "graphs"
     },
     "practiceGoal": "Explore an unweighted graph in distance layers with a queue and visited set.",
-    "order": 7
+    "order": 7,
+    "videos": [
+      {
+        "id": "oDqjPvD54Ss",
+        "title": "Breadth First Search Algorithm | Shortest Path | Graph Theory",
+        "creator": "WilliamFiset",
+        "sourceUrl": "https://www.youtube.com/watch?v=oDqjPvD54Ss",
+        "topicId": "graphs",
+        "note": "See the queue, visited set, and BFS layers visually before tracing a shortest path. Our challenge returns the number of edges rather than reconstructing the path.",
+        "reviewedAt": "2026-11-03",
+        "label": "Start here"
+      },
+      {
+        "id": "KiCBXu4P-2Y",
+        "title": "Breadth First Search grid shortest path | Graph Theory",
+        "creator": "WilliamFiset",
+        "sourceUrl": "https://www.youtube.com/watch?v=KiCBXu4P-2Y",
+        "topicId": "graphs",
+        "note": "Apply the same unweighted BFS shortest-path idea to a grid. A grid cell is a vertex and a legal move is an edge; our challenge uses an adjacency list instead.",
+        "reviewedAt": "2026-11-03",
+        "label": "Worked example"
+      }
+    ]
   },
   {
     "id": "dynamic-programming",
@@ -768,15 +859,6 @@
       }
     ],
     "solution": "function minCoins(coins,amount) {\n const dp=Array(amount+1).fill(Infinity); dp[0]=0;\n for(let a=1;a<=amount;a++) for(const c of coins)\n  if(c<=a) dp[a]=Math.min(dp[a],1+dp[a-c]);\n return Number.isFinite(dp[amount])?dp[amount]:-1;\n}",
-    "video": {
-      "id": "H9bfqozjoqs",
-      "title": "Coin Change - Dynamic Programming Bottom Up - Leetcode 322",
-      "creator": "NeetCode",
-      "sourceUrl": "https://www.youtube.com/watch?v=H9bfqozjoqs",
-      "topicId": "dynamic-programming",
-      "note": "Use the same minimum-coin recurrence, base case, and impossible-state handling in the playground. This is coin change, not a separate Fibonacci lecture.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://neetcode.io/solutions/coin-change",
     "tags": [
       "DP",
@@ -798,7 +880,29 @@
       "practise": "dynamic-programming"
     },
     "practiceGoal": "Define minimum-coins subproblems and compute them bottom-up instead of relying on a greedy choice.",
-    "order": 8
+    "order": 8,
+    "videos": [
+      {
+        "id": "H9bfqozjoqs",
+        "title": "Coin Change - Dynamic Programming Bottom Up - Leetcode 322",
+        "creator": "NeetCode",
+        "sourceUrl": "https://www.youtube.com/watch?v=H9bfqozjoqs",
+        "topicId": "dynamic-programming",
+        "note": "Use the same minimum-coin recurrence, base case, and impossible-state handling in the playground. This is coin change, not a separate Fibonacci lecture.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "jgiZlGzXMBw",
+        "title": "The Change Making Problem - Fewest Coins To Make Change Dynamic Programming",
+        "creator": "Back To Back SWE",
+        "sourceUrl": "https://www.youtube.com/watch?v=jgiZlGzXMBw",
+        "topicId": "dynamic-programming",
+        "note": "Build the minimum-coin dynamic-programming table step by step. This is the fewest-coins problem used here, rather than the different problem of counting combinations.",
+        "reviewedAt": "2026-11-03",
+        "label": "Another explanation"
+      }
+    ]
   },
   {
     "id": "vectors",
@@ -882,15 +986,6 @@
       }
     ],
     "solution": "function cosine(a,b) {\n let dot=0,aa=0,bb=0;\n for(let i=0;i<a.length;i++){dot+=a[i]*b[i];aa+=a[i]*a[i];bb+=b[i]*b[i];}\n return aa&&bb?dot/Math.sqrt(aa*bb):0;\n}",
-    "video": {
-      "id": "e9U0QAFbfLI",
-      "title": "Cosine Similarity, Clearly Explained!!!",
-      "creator": "StatQuest with Josh Starmer",
-      "sourceUrl": "https://www.youtube.com/watch?v=e9U0QAFbfLI",
-      "topicId": "vectors",
-      "note": "Work through the vector geometry and cosine formula. The playground implements that same formula, including an explicit convention for zero vectors.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://www.youtube.com/watch?v=e9U0QAFbfLI",
     "tags": [
       "Linear algebra",
@@ -909,7 +1004,29 @@
       "practise": "vectors"
     },
     "practiceGoal": "Compute a dot product and vector norms, then use cosine similarity to compare directions.",
-    "order": 1
+    "order": 1,
+    "videos": [
+      {
+        "id": "e9U0QAFbfLI",
+        "title": "Cosine Similarity, Clearly Explained!!!",
+        "creator": "StatQuest with Josh Starmer",
+        "sourceUrl": "https://www.youtube.com/watch?v=e9U0QAFbfLI",
+        "topicId": "vectors",
+        "note": "Work through the vector geometry and cosine formula. The playground implements that same formula, including an explicit convention for zero vectors.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "m_CooIRM3UI",
+        "title": "Cosine similarity, cosine distance explained | Math, Statistics for data science, machine learning",
+        "creator": "codebasics",
+        "sourceUrl": "https://www.youtube.com/watch?v=m_CooIRM3UI",
+        "topicId": "vectors",
+        "note": "Connect cosine similarity to a simple real-life comparison and a Python demonstration. Our playground implements the same dot-product and norm formula from scratch, without requiring sklearn.",
+        "reviewedAt": "2026-11-03",
+        "label": "Worked example"
+      }
+    ]
   },
   {
     "id": "neural-networks",
@@ -989,15 +1106,6 @@
       }
     ],
     "solution": "function neuron(inputs,weights,bias) {\n let z=bias;\n for(let i=0;i<inputs.length;i++) z+=inputs[i]*weights[i];\n return Math.max(0,z);\n}",
-    "video": {
-      "id": "aircAruvnKk",
-      "title": "But what is a neural network? | Deep learning chapter 1",
-      "creator": "3Blue1Brown",
-      "sourceUrl": "https://www.youtube.com/watch?v=aircAruvnKk",
-      "topicId": "neural-networks",
-      "note": "Focus on what one neuron and a layer compute: inputs, weights, biases, and activation. Our exercise implements one ReLU neuron; optimization comes later in this path.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://www.3blue1brown.com/lessons/neural-networks",
     "tags": [
       "Backprop",
@@ -1018,7 +1126,39 @@
       "practise": "neural-networks"
     },
     "practiceGoal": "Calculate a neuron’s weighted sum and bias, then apply the ReLU activation.",
-    "order": 2
+    "order": 2,
+    "videos": [
+      {
+        "id": "CqOfi41LfDw",
+        "title": "The Essential Main Ideas of Neural Networks",
+        "creator": "StatQuest with Josh Starmer",
+        "sourceUrl": "https://www.youtube.com/watch?v=CqOfi41LfDw",
+        "topicId": "neural-networks",
+        "note": "Build intuition for weights, biases, and a neuron before tracing a network. Focus on the forward calculation; our exercise computes a single ReLU neuron.",
+        "reviewedAt": "2026-11-03",
+        "label": "Start here"
+      },
+      {
+        "id": "aircAruvnKk",
+        "title": "But what is a neural network? | Deep learning chapter 1",
+        "creator": "3Blue1Brown",
+        "sourceUrl": "https://www.youtube.com/watch?v=aircAruvnKk",
+        "topicId": "neural-networks",
+        "note": "Focus on what one neuron and a layer compute: inputs, weights, biases, and activation. Our exercise implements one ReLU neuron; optimization comes later in this path.",
+        "reviewedAt": "2026-11-02",
+        "label": "Visual explanation"
+      },
+      {
+        "id": "68BZ5f7P94E",
+        "title": "Neural Networks Pt. 3: ReLU In Action!!!",
+        "creator": "StatQuest with Josh Starmer",
+        "sourceUrl": "https://www.youtube.com/watch?v=68BZ5f7P94E",
+        "topicId": "neural-networks",
+        "note": "Follow how ReLU turns a weighted input into an activation. Concentrate on the forward-pass examples that match the neuron in our challenge; training is covered later.",
+        "reviewedAt": "2026-11-03",
+        "label": "Worked example"
+      }
+    ]
   },
   {
     "id": "probability",
@@ -1090,15 +1230,6 @@
       }
     ],
     "solution": "function softmax(logits) {\n if(!logits.length) return [];\n const m=Math.max(...logits), ex=logits.map(x=>Math.exp(x-m));\n const total=ex.reduce((a,b)=>a+b,0);\n return ex.map(x=>x/total);\n}",
-    "video": {
-      "id": "KpKog-L9veg",
-      "title": "Neural Networks Part 5: ArgMax and SoftMax",
-      "creator": "StatQuest with Josh Starmer",
-      "sourceUrl": "https://www.youtube.com/watch?v=KpKog-L9veg",
-      "topicId": "probability",
-      "note": "Follow the softmax conversion from scores to normalized probabilities. The field notes and exercise add max subtraction to make the same operation safe for large logits.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://www.youtube.com/watch?v=KpKog-L9veg",
     "tags": [
       "Probability",
@@ -1119,7 +1250,29 @@
       "practise": "probability"
     },
     "practiceGoal": "Convert logits into a probability distribution using a numerically stable softmax.",
-    "order": 3
+    "order": 3,
+    "videos": [
+      {
+        "id": "KpKog-L9veg",
+        "title": "Neural Networks Part 5: ArgMax and SoftMax",
+        "creator": "StatQuest with Josh Starmer",
+        "sourceUrl": "https://www.youtube.com/watch?v=KpKog-L9veg",
+        "topicId": "probability",
+        "note": "Follow the softmax conversion from scores to normalized probabilities. The field notes and exercise add max subtraction to make the same operation safe for large logits.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "ytbYRIN0N4g",
+        "title": "Softmax Function Explained In Depth with 3D Visuals",
+        "creator": "Elliot Waite",
+        "sourceUrl": "https://www.youtube.com/watch?v=ytbYRIN0N4g",
+        "topicId": "probability",
+        "note": "See how changing scores changes the softmax probabilities in three dimensions. Apply the same exponentiate-and-normalize operation, with max subtraction for numerical stability, in our challenge.",
+        "reviewedAt": "2026-11-03",
+        "label": "Visual explanation"
+      }
+    ]
   },
   {
     "id": "gradient-descent",
@@ -1183,15 +1336,6 @@
       }
     ],
     "solution": "function descend(start,rate,steps) {\n let w=start;\n for(let i=0;i<steps;i++) w-=rate*2*(w-3);\n return w;\n}",
-    "video": {
-      "id": "IHZwWFHWa-w",
-      "title": "Gradient descent, how neural networks learn | Deep Learning Chapter 2",
-      "creator": "3Blue1Brown",
-      "sourceUrl": "https://www.youtube.com/watch?v=IHZwWFHWa-w",
-      "topicId": "gradient-descent",
-      "note": "Follow how loss, derivatives, and learning rate determine an update. Apply that same update rule to the scalar quadratic in the playground.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://www.3blue1brown.com/lessons/gradient-descent",
     "tags": [
       "Optimization",
@@ -1213,7 +1357,29 @@
       "practise": "gradient-descent"
     },
     "practiceGoal": "Reduce a differentiable loss by updating a parameter opposite its gradient.",
-    "order": 4
+    "order": 4,
+    "videos": [
+      {
+        "id": "IHZwWFHWa-w",
+        "title": "Gradient descent, how neural networks learn | Deep Learning Chapter 2",
+        "creator": "3Blue1Brown",
+        "sourceUrl": "https://www.youtube.com/watch?v=IHZwWFHWa-w",
+        "topicId": "gradient-descent",
+        "note": "Follow how loss, derivatives, and learning rate determine an update. Apply that same update rule to the scalar quadratic in the playground.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "sDv4f4s2SB8",
+        "title": "Gradient Descent, Step-by-Step",
+        "creator": "StatQuest with Josh Starmer",
+        "sourceUrl": "https://www.youtube.com/watch?v=sDv4f4s2SB8",
+        "topicId": "gradient-descent",
+        "note": "Follow a parameter update from the slope and learning rate. Use the single-variable walkthrough to reason about the quadratic update in our challenge.",
+        "reviewedAt": "2026-11-03",
+        "label": "Worked example"
+      }
+    ]
   },
   {
     "id": "evaluation",
@@ -1311,15 +1477,6 @@
       }
     ],
     "solution": "function metrics(actual,predicted) {\n let tp=0,fp=0,fn=0;\n actual.forEach((a,i)=>{if(predicted[i]===1){if(a===1)tp++;else fp++;}else if(a===1)fn++;});\n return {precision:tp+fp?tp/(tp+fp):0,recall:tp+fn?tp/(tp+fn):0};\n}",
-    "video": {
-      "id": "Kdsp6soqA7o",
-      "title": "Machine Learning Fundamentals: The Confusion Matrix",
-      "creator": "StatQuest with Josh Starmer",
-      "sourceUrl": "https://www.youtube.com/watch?v=Kdsp6soqA7o",
-      "topicId": "evaluation",
-      "note": "Build the confusion matrix from actual and predicted labels. The exercise uses those same true-positive, false-positive, and false-negative counts to calculate precision and recall.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://scikit-learn.org/stable/modules/model_evaluation.html",
     "tags": [
       "Evals",
@@ -1340,7 +1497,29 @@
       "practise": "evaluation"
     },
     "practiceGoal": "Count classification outcomes and derive precision and recall, including zero-denominator cases.",
-    "order": 5
+    "order": 5,
+    "videos": [
+      {
+        "id": "Kdsp6soqA7o",
+        "title": "Machine Learning Fundamentals: The Confusion Matrix",
+        "creator": "StatQuest with Josh Starmer",
+        "sourceUrl": "https://www.youtube.com/watch?v=Kdsp6soqA7o",
+        "topicId": "evaluation",
+        "note": "Build the confusion matrix from actual and predicted labels. The exercise uses those same true-positive, false-positive, and false-negative counts to calculate precision and recall.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "qWfzIYCvBqo",
+        "title": "Never Forget Again! // Precision vs Recall with a Clear Example of Precision and Recall",
+        "creator": "Kimberly Fessel",
+        "sourceUrl": "https://www.youtube.com/watch?v=qWfzIYCvBqo",
+        "topicId": "evaluation",
+        "note": "Use a concrete example to distinguish precision from recall. Calculate both from the same true-positive, false-positive, and false-negative counts in our challenge.",
+        "reviewedAt": "2026-11-03",
+        "label": "Worked example"
+      }
+    ]
   },
   {
     "id": "ai-systems",
@@ -1405,15 +1584,6 @@
       }
     ],
     "solution": "function validRequest(value) {\n return !!value && typeof value===\"object\" && !Array.isArray(value) &&\n value.action===\"search\" && typeof value.query===\"string\" &&\n value.query.trim().length>=1 && value.query.trim().length<=200;\n}",
-    "video": {
-      "id": "IbyYUTBDVXQ",
-      "title": "JSON Schema Tricks Every Developer Must Know",
-      "creator": "Postman",
-      "sourceUrl": "https://www.youtube.com/watch?v=IbyYUTBDVXQ",
-      "topicId": "ai-systems",
-      "note": "Watch how a JSON schema turns an expected data shape into validation checks. Apply that same contract-validation method to the search-tool request here. Postman is a demonstration tool; no external setup is required for our exercise.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://www.youtube.com/watch?v=IbyYUTBDVXQ",
     "tags": [
       "Architecture",
@@ -1435,7 +1605,29 @@
       "practise": "ai-systems"
     },
     "practiceGoal": "Validate the structure, allowed action, and query bounds of a proposed search-tool request before executing it.",
-    "order": 6
+    "order": 6,
+    "videos": [
+      {
+        "id": "kK-_gL7Vsc0",
+        "title": "What is JSON Schema",
+        "creator": "Automation Step by Step",
+        "sourceUrl": "https://www.youtube.com/watch?v=kK-_gL7Vsc0",
+        "topicId": "ai-systems",
+        "note": "Learn how a schema describes required fields and allowed types. Apply that same validation mindset to our AI search-tool request; the challenge uses plain JavaScript and needs no Postman account.",
+        "reviewedAt": "2026-11-03",
+        "label": "Start here"
+      },
+      {
+        "id": "IbyYUTBDVXQ",
+        "title": "JSON Schema Tricks Every Developer Must Know",
+        "creator": "Postman",
+        "sourceUrl": "https://www.youtube.com/watch?v=IbyYUTBDVXQ",
+        "topicId": "ai-systems",
+        "note": "Watch how a JSON schema turns an expected data shape into validation checks. Apply that same contract-validation method to the search-tool request here. Postman is a demonstration tool; no external setup is required for our exercise.",
+        "reviewedAt": "2026-11-02",
+        "label": "Worked example"
+      }
+    ]
   },
   {
     "id": "attention",
@@ -1536,15 +1728,6 @@
       }
     ],
     "solution": "function attend(query,keys,values) {\n if(!keys.length) return 0;\n const s=keys.map(k=>k.reduce((a,x,i)=>a+x*query[i],0)/Math.sqrt(query.length));\n const m=Math.max(...s),e=s.map(x=>Math.exp(x-m)),z=e.reduce((a,b)=>a+b,0);\n return e.reduce((a,x,i)=>a+x*values[i]/z,0);\n}",
-    "video": {
-      "id": "eMlx5fFNoYc",
-      "title": "Attention in transformers, step-by-step | Deep Learning Chapter 6",
-      "creator": "3Blue1Brown",
-      "sourceUrl": "https://www.youtube.com/watch?v=eMlx5fFNoYc",
-      "topicId": "attention",
-      "note": "Follow queries, keys, values, and softmax weighting. Our one-query exercise is a small numerical version of the same attention operation.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://arxiv.org/abs/1706.03762",
     "tags": [
       "Transformers",
@@ -1567,7 +1750,29 @@
       "practise": "attention"
     },
     "practiceGoal": "Score query–key pairs, apply stable softmax, and combine values using the resulting weights.",
-    "order": 7
+    "order": 7,
+    "videos": [
+      {
+        "id": "eMlx5fFNoYc",
+        "title": "Attention in transformers, step-by-step | Deep Learning Chapter 6",
+        "creator": "3Blue1Brown",
+        "sourceUrl": "https://www.youtube.com/watch?v=eMlx5fFNoYc",
+        "topicId": "attention",
+        "note": "Follow queries, keys, values, and softmax weighting. Our one-query exercise is a small numerical version of the same attention operation.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "PSs6nxngL6k",
+        "title": "Attention for Neural Networks, Clearly Explained!!!",
+        "creator": "StatQuest with Josh Starmer",
+        "sourceUrl": "https://www.youtube.com/watch?v=PSs6nxngL6k",
+        "topicId": "attention",
+        "note": "Walk through attention scores and weighted information step by step. Relate those scores to the query, key, softmax, and value operations in our scaled dot-product exercise.",
+        "reviewedAt": "2026-11-03",
+        "label": "Another explanation"
+      }
+    ]
   },
   {
     "id": "retrieval",
@@ -1653,15 +1858,6 @@
       }
     ],
     "solution": "function rank(query,docs) {\n const tokens=s=>s.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);\n const q=new Set(tokens(query));\n return docs.map((d,i)=>({i,score:[...new Set(tokens(d))].filter(x=>q.has(x)).length}))\n .sort((a,b)=>b.score-a.score||a.i-b.i).map(x=>x.i);\n}",
-    "video": {
-      "id": "T-D1OfcDW1M",
-      "title": "What is Retrieval-Augmented Generation (RAG)?",
-      "creator": "IBM Technology",
-      "sourceUrl": "https://www.youtube.com/watch?v=T-D1OfcDW1M",
-      "topicId": "retrieval",
-      "note": "Follow the retrieval stage of RAG and how evidence reaches the generator. Our exercise implements an inspectable lexical retriever for that stage; it does not call a model or generate an answer.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://arxiv.org/abs/2005.11401",
     "tags": [
       "RAG",
@@ -1685,7 +1881,29 @@
       "practise": "retrieval"
     },
     "practiceGoal": "Retrieve relevant evidence for a question and evaluate the retrieval stage before generating an answer.",
-    "order": 8
+    "order": 8,
+    "videos": [
+      {
+        "id": "T-D1OfcDW1M",
+        "title": "What is Retrieval-Augmented Generation (RAG)?",
+        "creator": "IBM Technology",
+        "sourceUrl": "https://www.youtube.com/watch?v=T-D1OfcDW1M",
+        "topicId": "retrieval",
+        "note": "Follow the retrieval stage of RAG and how evidence reaches the generator. Our exercise implements an inspectable lexical retriever for that stage; it does not call a model or generate an answer.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "of4UDMvi2Kw",
+        "title": "A Helping Hand for LLMs (Retrieval Augmented Generation) - Computerphile",
+        "creator": "Computerphile",
+        "sourceUrl": "https://www.youtube.com/watch?v=of4UDMvi2Kw",
+        "topicId": "retrieval",
+        "note": "Understand why retrieving relevant evidence helps a language model answer. Focus on the retrieval stage: our challenge ranks documents lexically and returns evidence IDs without calling a model.",
+        "reviewedAt": "2026-11-03",
+        "label": "Another explanation"
+      }
+    ]
   },
   {
     "id": "semantic-html",
@@ -1751,15 +1969,6 @@
       }
     ],
     "solution": "function accessibleName(control) {\n for(const v of [control.ariaLabel,control.label]) if(typeof v===\"string\"&&v.trim()) return v.trim();\n return null;\n}",
-    "video": {
-      "id": "8dCUzOiMRy4",
-      "title": "The art of labeling -- A11ycasts #12",
-      "creator": "Chrome for Developers",
-      "sourceUrl": "https://www.youtube.com/watch?v=8dCUzOiMRy4",
-      "topicId": "semantic-html",
-      "note": "Follow how controls receive accessible names and why placeholders are insufficient. Our exercise models only the label and aria-label subset; it is not the complete browser accessible-name algorithm.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/HTML",
     "tags": [
       "HTML",
@@ -1778,7 +1987,29 @@
       "practise": "semantic-html"
     },
     "practiceGoal": "Give interactive controls meaningful accessible names using native labels and appropriate ARIA overrides.",
-    "order": 1
+    "order": 1,
+    "videos": [
+      {
+        "id": "8dCUzOiMRy4",
+        "title": "The art of labeling -- A11ycasts #12",
+        "creator": "Chrome for Developers",
+        "sourceUrl": "https://www.youtube.com/watch?v=8dCUzOiMRy4",
+        "topicId": "semantic-html",
+        "note": "Follow how controls receive accessible names and why placeholders are insufficient. Our exercise models only the label and aria-label subset; it is not the complete browser accessible-name algorithm.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "GH1N2m75eE4",
+        "title": "How aria-label works with ADA Accessibility in HTML",
+        "creator": "A Designer Who Codes",
+        "sourceUrl": "https://www.youtube.com/watch?v=GH1N2m75eE4",
+        "topicId": "semantic-html",
+        "note": "See how aria-label provides an accessible name when a visible label is absent. Prefer a native label for form inputs when possible; our exercise models this small label-and-aria-label subset.",
+        "reviewedAt": "2026-11-03",
+        "label": "Worked example"
+      }
+    ]
   },
   {
     "id": "css-layout",
@@ -1842,18 +2073,6 @@
       }
     ],
     "solution": "function columns(width,minimum,gap) {\n return Math.max(1,Math.floor((width+gap)/(minimum+gap)));\n}",
-    "video": {
-      "id": "sKFW3wek21Q",
-      "title": "Learn how to create a responsive CSS grid layout",
-      "creator": "Kevin Powell",
-      "sourceUrl": "https://www.youtube.com/watch?v=sKFW3wek21Q",
-      "topicId": "css-layout",
-      "note": "Focus on making the grid dynamic with auto-fit and fixing narrow-screen behavior. The exercise computes the same column-capacity constraint before you try a visual version in the HTML/CSS playground.",
-      "reviewedAt": "2026-11-02",
-      "start": 1132,
-      "end": 1351,
-      "segmentTitle": "Dynamic grids with auto-fit"
-    },
     "source": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout",
     "tags": [
       "CSS",
@@ -1874,7 +2093,32 @@
       "practise": "css-layout"
     },
     "practiceGoal": "Fit minimum-width cards into a responsive grid while accounting for the gaps between columns.",
-    "order": 2
+    "order": 2,
+    "videos": [
+      {
+        "id": "sKFW3wek21Q",
+        "title": "Learn how to create a responsive CSS grid layout",
+        "creator": "Kevin Powell",
+        "sourceUrl": "https://www.youtube.com/watch?v=sKFW3wek21Q",
+        "topicId": "css-layout",
+        "note": "Focus on making the grid dynamic with auto-fit and fixing narrow-screen behavior. The exercise computes the same column-capacity constraint before you try a visual version in the HTML/CSS playground.",
+        "reviewedAt": "2026-11-02",
+        "start": 1132,
+        "end": 1351,
+        "segmentTitle": "Dynamic grids with auto-fit",
+        "label": "Start here"
+      },
+      {
+        "id": "OZ6qKoq7RJU",
+        "title": "The magic of auto-fit and auto-fill (and the difference between them)",
+        "creator": "Kevin Powell",
+        "sourceUrl": "https://www.youtube.com/watch?v=OZ6qKoq7RJU",
+        "topicId": "css-layout",
+        "note": "Compare auto-fit and auto-fill with concrete responsive grids. Relate minimum card widths and gaps to the column-capacity calculation in our challenge.",
+        "reviewedAt": "2026-11-03",
+        "label": "Another explanation"
+      }
+    ]
   },
   {
     "id": "javascript",
@@ -1964,15 +2208,6 @@
       }
     ],
     "solution": "function toggleTodo(todos,id) {\n return todos.map(todo=>todo.id===id?{...todo,done:!todo.done}:todo);\n}",
-    "video": {
-      "id": "R8rmfD9Y5-c",
-      "title": "8 Must Know JavaScript Array Methods",
-      "creator": "Web Dev Simplified",
-      "sourceUrl": "https://www.youtube.com/watch?v=R8rmfD9Y5-c",
-      "topicId": "javascript",
-      "note": "Follow how map creates a new array from existing items. Apply map to update one todo, returning a new object for the changed item and preserving the original input.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map",
     "tags": [
       "JavaScript",
@@ -1991,7 +2226,29 @@
       "practise": "javascript"
     },
     "practiceGoal": "Transform an array into a new array and replace the changed object without mutating the original state.",
-    "order": 3
+    "order": 3,
+    "videos": [
+      {
+        "id": "R8rmfD9Y5-c",
+        "title": "8 Must Know JavaScript Array Methods",
+        "creator": "Web Dev Simplified",
+        "sourceUrl": "https://www.youtube.com/watch?v=R8rmfD9Y5-c",
+        "topicId": "javascript",
+        "note": "Follow how map creates a new array from existing items. Apply map to update one todo, returning a new object for the changed item and preserving the original input.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "DC471a9qrU4",
+        "title": "Array Map in 100 Seconds",
+        "creator": "Fireship",
+        "sourceUrl": "https://www.youtube.com/watch?v=DC471a9qrU4",
+        "topicId": "javascript",
+        "note": "Review how map transforms items into a new array. For our immutable todo update, also return a new object for the changed item rather than mutating the original object.",
+        "reviewedAt": "2026-11-03",
+        "label": "Quick recap"
+      }
+    ]
   },
   {
     "id": "frontend-architecture",
@@ -2056,15 +2313,6 @@
       }
     ],
     "solution": "function completion(progress) {\n return Math.round([\"read\",\"watched\",\"practised\"].filter(k=>progress?.[k]).length/3*100);\n}",
-    "video": {
-      "id": "fYbhD_KMCOg",
-      "title": "Learn Pure Functions In 10 Minutes",
-      "creator": "Web Dev Simplified",
-      "sourceUrl": "https://www.youtube.com/watch?v=fYbhD_KMCOg",
-      "topicId": "frontend-architecture",
-      "note": "Identify deterministic output and the absence of side effects. Our progress-percentage function is an example of the same pure calculation, tested with partial, complete, and missing input.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://www.youtube.com/watch?v=fYbhD_KMCOg",
     "tags": [
       "Testing",
@@ -2085,7 +2333,29 @@
       "practise": "frontend-architecture"
     },
     "practiceGoal": "Keep a UI calculation pure so it can be checked with repeatable input/output tests.",
-    "order": 4
+    "order": 4,
+    "videos": [
+      {
+        "id": "fYbhD_KMCOg",
+        "title": "Learn Pure Functions In 10 Minutes",
+        "creator": "Web Dev Simplified",
+        "sourceUrl": "https://www.youtube.com/watch?v=fYbhD_KMCOg",
+        "topicId": "frontend-architecture",
+        "note": "Identify deterministic output and the absence of side effects. Our progress-percentage function is an example of the same pure calculation, tested with partial, complete, and missing input.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "cUrEedgvJSk",
+        "title": "Refactoring JavaScript code into tiny, pure, composable functions",
+        "creator": "Fun Fun Function",
+        "sourceUrl": "https://www.youtube.com/watch?v=cUrEedgvJSk",
+        "topicId": "frontend-architecture",
+        "note": "See a real JavaScript calculation refactored into small pure functions. Apply the same deterministic input/output contract to the progress-percentage function in our challenge.",
+        "reviewedAt": "2026-11-03",
+        "label": "Worked example"
+      }
+    ]
   },
   {
     "id": "async",
@@ -2145,18 +2415,6 @@
       }
     ],
     "solution": "function shouldCommit(latestId,responseId) {\n return latestId===responseId;\n}",
-    "video": {
-      "id": "BeZfiCPhZbI",
-      "title": "I Cannot Believe Abort Controller Can Do This",
-      "creator": "Web Dev Simplified",
-      "sourceUrl": "https://www.youtube.com/watch?v=BeZfiCPhZbI",
-      "topicId": "async",
-      "note": "The selected chapter shows cancelling obsolete work with AbortController. The exercise practices the complementary commit guard: accept a result only when its request ID is current.",
-      "reviewedAt": "2026-11-02",
-      "start": 75,
-      "end": 139,
-      "segmentTitle": "Basic AbortController: cancelling obsolete work"
-    },
     "source": "https://developer.mozilla.org/en-US/docs/Web/API/AbortController",
     "tags": [
       "Promises",
@@ -2178,7 +2436,32 @@
       "practise": "async"
     },
     "practiceGoal": "Prevent an obsolete asynchronous request from overwriting the result of a newer request.",
-    "order": 5
+    "order": 5,
+    "videos": [
+      {
+        "id": "BeZfiCPhZbI",
+        "title": "I Cannot Believe Abort Controller Can Do This",
+        "creator": "Web Dev Simplified",
+        "sourceUrl": "https://www.youtube.com/watch?v=BeZfiCPhZbI",
+        "topicId": "async",
+        "note": "The selected chapter shows cancelling obsolete work with AbortController. The exercise practices the complementary commit guard: accept a result only when its request ID is current.",
+        "reviewedAt": "2026-11-02",
+        "start": 75,
+        "end": 139,
+        "segmentTitle": "Basic AbortController: cancelling obsolete work",
+        "label": "Start here"
+      },
+      {
+        "id": "2sdXSczmvNc",
+        "title": "Abort Controller is criminally underrated (every react dev should use this)",
+        "creator": "Theo - t3․gg",
+        "sourceUrl": "https://www.youtube.com/watch?v=2sdXSczmvNc",
+        "topicId": "async",
+        "note": "See why cancelling obsolete requests matters in user interfaces. Compare cancellation with our request-ID commit guard; both prevent an older result from replacing the latest one.",
+        "reviewedAt": "2026-11-03",
+        "label": "Go deeper"
+      }
+    ]
   },
   {
     "id": "typescript",
@@ -2243,15 +2526,6 @@
       }
     ],
     "solution": "function isUser(value) {\n return !!value && typeof value===\"object\" && !Array.isArray(value) &&\n Number.isInteger(value.id)&&value.id>0&&typeof value.name===\"string\"&&value.name.trim().length>0;\n}",
-    "video": {
-      "id": "p-YEN-9KnRo",
-      "title": "Custom Type Guards in TypeScript",
-      "creator": "TypeScript with Benny Code",
-      "sourceUrl": "https://www.youtube.com/watch?v=p-YEN-9KnRo",
-      "topicId": "typescript",
-      "note": "Follow how a type guard checks values before narrowing a type. Our JavaScript challenge implements the runtime checks that a TypeScript user-defined type guard would wrap.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
     "tags": [
       "TypeScript",
@@ -2273,7 +2547,29 @@
       "practise": "typescript"
     },
     "practiceGoal": "Check unknown input at runtime before treating it as a typed user object.",
-    "order": 6
+    "order": 6,
+    "videos": [
+      {
+        "id": "_u23NOHC6WU",
+        "title": "TypeScript Crash Course #12 - Type Guards",
+        "creator": "Net Ninja",
+        "sourceUrl": "https://www.youtube.com/watch?v=_u23NOHC6WU",
+        "topicId": "typescript",
+        "note": "Learn how runtime checks narrow unknown values before you use them. The JavaScript challenge implements the same checks that a TypeScript user-defined guard would wrap.",
+        "reviewedAt": "2026-11-03",
+        "label": "Start here"
+      },
+      {
+        "id": "p-YEN-9KnRo",
+        "title": "Custom Type Guards in TypeScript",
+        "creator": "TypeScript with Benny Code",
+        "sourceUrl": "https://www.youtube.com/watch?v=p-YEN-9KnRo",
+        "topicId": "typescript",
+        "note": "Follow how a type guard checks values before narrowing a type. Our JavaScript challenge implements the runtime checks that a TypeScript user-defined type guard would wrap.",
+        "reviewedAt": "2026-11-02",
+        "label": "Worked example"
+      }
+    ]
   },
   {
     "id": "react-state",
@@ -2371,15 +2667,6 @@
       }
     ],
     "solution": "function visibleProducts(products,query,onlyStocked) {\n return products.filter(p=>p.name.toLowerCase().includes(query.toLowerCase())&&(!onlyStocked||p.stocked));\n}",
-    "video": {
-      "id": "tz0fDABt67g",
-      "title": "Every Beginner React Developer Makes This Mistake With State",
-      "creator": "Web Dev Simplified",
-      "sourceUrl": "https://www.youtube.com/watch?v=tz0fDABt67g",
-      "topicId": "react-state",
-      "note": "Follow the derived-state problem and its fix. The exercise extracts the product-filtering calculation that should be derived during rendering instead of stored as duplicate state.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://react.dev/learn/thinking-in-react",
     "tags": [
       "React",
@@ -2403,7 +2690,29 @@
       "practise": "react-state"
     },
     "practiceGoal": "Store minimal React state and derive visible products from the query and stock toggle.",
-    "order": 7
+    "order": 7,
+    "videos": [
+      {
+        "id": "tz0fDABt67g",
+        "title": "Every Beginner React Developer Makes This Mistake With State",
+        "creator": "Web Dev Simplified",
+        "sourceUrl": "https://www.youtube.com/watch?v=tz0fDABt67g",
+        "topicId": "react-state",
+        "note": "Follow the derived-state problem and its fix. The exercise extracts the product-filtering calculation that should be derived during rendering instead of stored as duplicate state.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "Cp64YbYBNDA",
+        "title": "Smarter and Simpler React State",
+        "creator": "Jack Herrington",
+        "sourceUrl": "https://www.youtube.com/watch?v=Cp64YbYBNDA",
+        "topicId": "react-state",
+        "note": "Explore simpler state by deriving values instead of storing redundant copies. Apply that principle to the visible-products list derived from the query and stock toggle in our challenge.",
+        "reviewedAt": "2026-11-03",
+        "label": "Worked example"
+      }
+    ]
   },
   {
     "id": "performance",
@@ -2478,15 +2787,6 @@
       }
     ],
     "solution": "function cacheKeys(capacity,accesses) {\n const cache=new Map();\n for(const key of accesses) {cache.delete(key);cache.set(key,true);if(cache.size>capacity)cache.delete(cache.keys().next().value);}\n return [...cache.keys()];\n}",
-    "video": {
-      "id": "7ABFKPK2hD4",
-      "title": "LRU Cache - Twitch Interview Question - Leetcode 146",
-      "creator": "NeetCode",
-      "sourceUrl": "https://www.youtube.com/watch?v=7ABFKPK2hD4",
-      "topicId": "performance",
-      "note": "Trace cache hits, recency updates, and eviction. Our exercise simulates the same LRU policy and returns keys from least to most recently used.",
-      "reviewedAt": "2026-11-02"
-    },
     "source": "https://neetcode.io/solutions/lru-cache",
     "tags": [
       "Performance",
@@ -2509,6 +2809,28 @@
       "practise": "performance"
     },
     "practiceGoal": "Keep a bounded data cache and evict the least recently used entry after each access.",
-    "order": 8
+    "order": 8,
+    "videos": [
+      {
+        "id": "7ABFKPK2hD4",
+        "title": "LRU Cache - Twitch Interview Question - Leetcode 146",
+        "creator": "NeetCode",
+        "sourceUrl": "https://www.youtube.com/watch?v=7ABFKPK2hD4",
+        "topicId": "performance",
+        "note": "Trace cache hits, recency updates, and eviction. Our exercise simulates the same LRU policy and returns keys from least to most recently used.",
+        "reviewedAt": "2026-11-02",
+        "label": "Start here"
+      },
+      {
+        "id": "S6IfqDXWa10",
+        "title": "Implement An LRU Cache - The LRU Cache Eviction Policy (\"LRU Cache\" on LeetCode)",
+        "creator": "Back To Back SWE",
+        "sourceUrl": "https://www.youtube.com/watch?v=S6IfqDXWa10",
+        "topicId": "performance",
+        "note": "Trace the least-recently-used eviction policy and its implementation. Our exercise simulates that same recency policy and returns keys from least to most recently used.",
+        "reviewedAt": "2026-11-03",
+        "label": "Another explanation"
+      }
+    ]
   }
 ]

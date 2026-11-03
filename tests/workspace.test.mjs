@@ -8,7 +8,7 @@ const ids=lessons.map(l=>l.id);
 test('curriculum covers three paths with unique lessons and executable checks',()=>{
  assert.equal(lessons.length,24);assert.equal(new Set(ids).size,24);
  for(const track of ['dsa','ai','frontend'])assert.equal(lessons.filter(l=>l.track===track).length,8);
- for(const l of lessons){assert.match(l.id,/^[a-z0-9-]+$/);assert.match(l.video.id,/^[\w-]{11}$/);assert.equal(new URL(l.source).protocol,'https:');assert.equal(l.sections.length,3);assert.equal(l.tests.length,4);assert.ok(l.sections.every(s=>s.body.length>200));}
+ for(const l of lessons){assert.match(l.id,/^[a-z0-9-]+$/);assert.ok(l.videos.length>=2&&l.videos.length<=4);for(const v of l.videos)assert.match(v.id,/^[\w-]{11}$/);assert.equal(new URL(l.source).protocol,'https:');assert.equal(l.sections.length,3);assert.equal(l.tests.length,4);assert.ok(l.sections.every(s=>s.body.length>200));}
 });
 for(const l of lessons)test(`reference solution: ${l.title}`,()=>{
  const ctx=vm.createContext({});vm.runInContext(l.solution,ctx,{timeout:200});

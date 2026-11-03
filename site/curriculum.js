@@ -10,11 +10,18 @@ export function prepareCurriculum(input){
   if(!lesson.id||byId.has(lesson.id))throw new Error('Lesson IDs must be unique.');
   if(!TRACK_ORDER.includes(lesson.track)||!LEVEL_ORDER.includes(lesson.level))throw new Error(`Invalid path or stage: ${lesson.id}`);
   if(!Number.isInteger(lesson.order)||lesson.order<1)throw new Error(`Missing step number: ${lesson.id}`);
-  if(lesson.topicId!==lesson.id||['read','watch','practise'].some(activity=>lesson.alignment?.[activity]!==lesson.id)||lesson.video?.topicId!==lesson.id)throw new Error(`Activities do not share one topic: ${lesson.id}`);
+  if(lesson.topicId!==lesson.id||['read','watch','practise'].some(activity=>lesson.alignment?.[activity]!==lesson.id))throw new Error(`Activities do not share one topic: ${lesson.id}`);
   if(typeof lesson.learningObjective!=='string'||lesson.learningObjective.length<25)throw new Error(`Missing learning objective: ${lesson.id}`);
   if(!Array.isArray(lesson.prerequisites))throw new Error(`Missing prerequisites: ${lesson.id}`);
-  if(!/^[\w-]{11}$/.test(lesson.video.id)||new URL(lesson.video.sourceUrl).searchParams.get('v')!==lesson.video.id)throw new Error(`Invalid video source: ${lesson.id}`);
-  videoEmbedUrl(lesson.video);
+  if(!Array.isArray(lesson.videos)||lesson.videos.length<2||lesson.videos.length>4)throw new Error(`Each lesson needs 2–4 videos: ${lesson.id}`);
+  if(new Set(lesson.videos.map(v=>v.id)).size!==lesson.videos.length)throw new Error(`Duplicate video in lesson: ${lesson.id}`);
+  for(const video of lesson.videos){
+   if(video.topicId!==lesson.id)throw new Error(`Activities do not share one topic: ${lesson.id}`);
+   const source=new URL(video.sourceUrl);
+   if(!/^[\w-]{11}$/.test(video.id)||source.origin!=='https://www.youtube.com'||source.pathname!=='/watch'||source.searchParams.get('v')!==video.id)throw new Error(`Invalid video source: ${lesson.id}`);
+   if(!video.title||!video.creator||!video.label||!video.reviewedAt||typeof video.note!=='string'||video.note.length<50)throw new Error(`Missing video guidance: ${lesson.id}`);
+   videoEmbedUrl(video);
+  }
   byId.set(lesson.id,lesson);
  }
  lessons.sort((a,b)=>TRACK_ORDER.indexOf(a.track)-TRACK_ORDER.indexOf(b.track)||a.order-b.order);
@@ -33,12 +40,14 @@ export function prepareCurriculum(input){
  }
  lessons.forEach(visit);
  for(let i=0;i<lessons.length;i++)for(let j=i+1;j<lessons.length;j++){
-  const a=lessons[i],b=lessons[j];if(a.video.id!==b.video.id)continue;
-  const av=a.video,bv=b.video;
+  const a=lessons[i],b=lessons[j];
+  for(const av of a.videos)for(const bv of b.videos){if(av.id!==bv.id)continue;
   if(av.start==null||av.end==null||bv.start==null||bv.end==null||Math.max(av.start,bv.start)<Math.min(av.end,bv.end))throw new Error(`Different topics share an unfocused video: ${a.id}, ${b.id}`);
+  }
  }
  return lessons;
 }
+export function lessonVideo(lesson,id){return lesson.videos.find(video=>video.id===id)||lesson.videos[0];}
 export function videoEmbedUrl(video){
  const url=new URL(`https://www.youtube-nocookie.com/embed/${video.id}`);url.searchParams.set('autoplay','1');url.searchParams.set('rel','0');
  const hasStart=video.start!=null,hasEnd=video.end!=null;

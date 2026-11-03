@@ -1,4 +1,6 @@
 import {firebaseConfig} from './firebase-config.js';
+import {geminiConfig} from './gemini-config.js';
+import {TUTOR_INSTRUCTION} from './gemini-conversation.js';
 const SDK='https://www.gstatic.com/firebasejs/13.1.0/';
 let clientPromise;
 export function firebaseReady(){return !!(firebaseConfig?.apiKey&&firebaseConfig?.projectId&&firebaseConfig?.authDomain);}
@@ -7,12 +9,28 @@ export function getFirebaseClient(){
  return clientPromise??=(async()=>{
   const [appSDK,authSDK,dbSDK]=await Promise.all([import(SDK+'firebase-app.js'),import(SDK+'firebase-auth.js'),import(SDK+'firebase-firestore.js')]);
   const app=appSDK.initializeApp(firebaseConfig),auth=authSDK.getAuth(app),db=dbSDK.getFirestore(app),provider=new authSDK.GoogleAuthProvider();
+  let tutorPromise,appCheck;
   provider.setCustomParameters({prompt:'select_account'});
   return {
    currentUser:()=>auth.currentUser,
    observe:(next,error)=>authSDK.onAuthStateChanged(auth,next,error),
    signIn:()=>authSDK.signInWithPopup(auth,provider),
    signOut:()=>authSDK.signOut(auth),
+   async askGemini(contents){
+    const uid=auth.currentUser?.uid;
+    if(!uid)throw new Error('Sign in to ask Gemini.');
+    const model=await (tutorPromise??=(async()=>{
+     if(!geminiConfig.appCheckSiteKey)throw new Error('Gemini App Check setup is incomplete.');
+     const [checkSDK,aiSDK]=await Promise.all([import(SDK+'firebase-app-check.js'),import(SDK+'firebase-ai.js')]);
+     const Provider=geminiConfig.appCheckProvider==='enterprise'?checkSDK.ReCaptchaEnterpriseProvider:checkSDK.ReCaptchaV3Provider;
+     appCheck??=checkSDK.initializeAppCheck(app,{provider:new Provider(geminiConfig.appCheckSiteKey),isTokenAutoRefreshEnabled:true});
+     const ai=aiSDK.getAI(app,{backend:new aiSDK.GoogleAIBackend()});
+     return aiSDK.getGenerativeModel(ai,{model:geminiConfig.model,systemInstruction:TUTOR_INSTRUCTION,generationConfig:{maxOutputTokens:2048,temperature:0.4}},{timeout:45000});
+    })().catch(error=>{tutorPromise=null;throw error;}));
+    if(auth.currentUser?.uid!==uid)throw new Error('Sign in to ask Gemini.');
+    const result=await model.generateContent({contents});
+    return result.response.text();
+   },
    async saveProfile(user){
     if(!user.email)throw new Error('Google did not provide an email address. Choose another account.');
     const ref=dbSDK.doc(db,'users',user.uid),old=await dbSDK.getDoc(ref);

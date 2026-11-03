@@ -6,7 +6,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#173d32">
 <title>Frontier — Learn. Build. Go further.</title>
-<link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css?v=topics-3">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css?v=watch-4">
 </head>
 <body>
 <section id="auth-gate" class="auth-gate" aria-labelledby="auth-title">
@@ -43,8 +43,18 @@
 <main id="main" tabindex="-1"><div class="loading"><span class="spark">✳</span><h1>Make room for what’s next.</h1><p>Loading your learning workspace…</p></div></main>
 <footer class="footer"><span>Built for curiosity. Designed for practice.</span><span>Read · Watch · Practise <span class="footer-dot">●</span> All in one place</span></footer>
 </div>
+<button id="gemini-launcher" class="gemini-launcher" aria-controls="gemini-panel" aria-expanded="false" aria-label="Open Gemini tutor"><span aria-hidden="true">✳</span> Ask Gemini</button>
+<aside id="gemini-panel" class="gemini-panel" aria-labelledby="gemini-title" hidden>
+ <header class="gemini-header"><div><span class="gemini-spark" aria-hidden="true">✳</span><div><h2 id="gemini-title">Your Gemini tutor</h2><p>Understand it. Then build it.</p></div></div><button id="gemini-close" class="ghost" aria-label="Close Gemini tutor">×</button></header>
+ <div class="gemini-context"><div><strong id="gemini-context-label">Selected passage</strong><button id="gemini-new" class="ghost">New chat</button></div><blockquote id="gemini-excerpt"></blockquote><p id="gemini-truncated" class="small muted" hidden>Using the first 4,000 characters of your selection.</p></div>
+ <div id="gemini-messages" class="gemini-messages" role="log" aria-label="Conversation with Gemini" aria-live="polite" aria-relevant="additions text"></div>
+ <div id="gemini-suggestions" class="gemini-suggestions"><button data-question="Explain this in simpler terms.">Explain simply</button><button data-question="Walk me through a small example of this.">Show an example</button><button data-question="Give me a hint to practise this, without revealing the solution.">Give me a hint</button></div>
+ <form id="gemini-form" class="gemini-form"><label for="gemini-question">Ask about this topic</label><textarea id="gemini-question" rows="3" placeholder="What would you like to understand?" maxlength="2000"></textarea><div><span>⌘ / Ctrl + Enter to send</span><button id="gemini-send" type="submit" class="primary">Send <span aria-hidden="true">↗</span></button></div></form>
+ <p id="gemini-status" class="gemini-status" role="status"></p>
+ <p class="gemini-privacy">Your excerpt and messages are sent to Google when you send. Chats stay in this tab and clear on sign-out or reload. Gemini can make mistakes.<br>Protected by reCAPTCHA: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy</a> · <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Terms</a></p>
+</aside>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
 <dialog id="backup-dialog"><form method="dialog"><button class="close" aria-label="Close backup dialog">×</button></form><p class="eyebrow">YOUR WORK, YOURS TO KEEP</p><h2>Back up your workspace</h2><p>Your workspace saves to your Firebase account. You can also download a private backup of your progress, notes, and code.</p><button id="export-data" class="primary">↓ Download backup</button><label class="upload-label" for="import-data">↑ Restore from a backup</label><input type="file" id="import-data" accept="application/json,.json"><p class="small muted">Restore merges matching lesson records. Records from the backup replace matching local records. Restored records save to your signed-in Firebase account.</p></dialog>
-<script type="module" src="./app.js?v=topics-3"></script>
+<script type="module" src="./app.js?v=watch-4"></script>
 </body></html>

@@ -11,7 +11,7 @@ Validated on 2 November 2026.
 - Responsive overview and playground checked at 390px width without horizontal page overflow.
 - GitHub Pages workflow is included. Its deployment depends on Pages being enabled and the source repository being public for this account's current plan.
 
-Third-party playback and CDN availability can change independently of the application. Example exercise checks do not prove general correctness. Personal data stays in browser storage and is absent from the repository.
+Third-party playback and CDN availability can change independently of the application. Example exercise checks do not prove general correctness. Current account data is private in Firestore, with per-account local recovery copies; personal workspace records are absent from the repository.
 
 ## Firebase authentication and account sync update
 
@@ -34,3 +34,12 @@ Third-party playback and CDN availability can change independently of the applic
 - Ordered stages and explicit prerequisites are validated before rendering. Cycles, future prerequisites, activity swaps, and unfocused reused videos fail validation.
 - All 46 application tests pass, including all 96 reference-solution examples and six curriculum regression tests. The unchanged Firebase authorization suite remains part of CI.
 - Stable lesson IDs and exercise contracts preserve existing Firebase progress and drafts.
+
+## Multiple explanations per Watch tab — 3 November 2026
+
+- 49 distinct videos across 24 lessons; 23 lessons have two choices and the neuron lesson has three.
+- Titles, publishers, and embedding availability checked with YouTube oEmbed for all videos. Popularity and topic fit assessed from creator descriptions and visible YouTube results; no permanent view-count ranking is claimed.
+- Preserved the StatQuest cosine similarity video as the first choice and added codebasics alongside it.
+- Video controls switch only the Watch pane, replace the old player, and retain lesson notes and completion. Every choice includes its connection to the challenge.
+- All 56 application tests pass, including video counts, alignment of every video, stale video IDs, duplicate/source rejection, and Gemini request/history isolation. The unchanged seven Firestore security tests also run in deployment CI.
+- Gemini UI and Firebase AI Logic integration are prepared but disabled until the owner approves required service terms and App Check setup is complete. No Gemini response has been verified yet.
